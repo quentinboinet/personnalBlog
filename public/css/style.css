@@ -1,0 +1,49 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    font-family: Montserrat;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+nav.nav-center ul {
+    text-align: center;
+}
+nav.nav-center ul li {
+    display: inline;
+    float: none;
+    margin: 20px;
+
+}
+nav.nav-center ul li a {
+    display: inline-block;
+    font-size: 1.3em;
+    font-weight: 700;
+}
+.brand-logo
+{
+    background-color: #009688;
+    border-radius: 0px 0px 100px 100px;
+}
+.banner
+{
+    background-color: rgba(64,210,196, 0.3);
+    height: 100px;
+}
+footer
+{
+    text-align: center;
+}
+.list-inline {
+    padding-left: 0;
+    margin-left: -5px;
+    list-style: none;
+}
+.list-inline > li {
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+}
