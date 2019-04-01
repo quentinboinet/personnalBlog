@@ -14,6 +14,23 @@
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <!--MMaterialize JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.sidenav');
+                var instances = M.Sidenav.init(elems,
+                    {
+                        edge: 'left',
+                        draggable: true,
+                        inDuration: 250,
+                        outDuration: 200
+                    }
+                    );
+            });
+        </script>
+
         <title>Quentin Boinet {% block title %}{% endblock %}</title>
     </head>
 
@@ -21,27 +38,38 @@
         <header>
             <nav class="nav-center">
                 <div class="nav-wrapper teal">
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger brand-logo center"><i class="material-icons">menu</i></a>
                     <div class="row">
 
                         <div class="col m5">
-                        <ul id="nav-mobile" class="hide-on-med-and-down">
-                            <li><a href="">Accueil</a></li>
-                            <li><a href="#about">A propos</a></li>
-                            <li><a href="#contact">Me contacter</a></li>
-                        </ul>
+                            <ul id="nav-mobile" class="hide-on-med-and-down">
+                                <li><a href="">Accueil</a></li>
+                                <li><a href="#about">A propos</a></li>
+                                <li><a href="#contact">Me contacter</a></li>
+                            </ul>
                         </div>
 
-                        <div class="col m2">
+                        <div class="col m2 hide-on-med-and-down">
                             <a href="#" class="brand-logo center"><img src="public/images/logo4.png" title="Quentin Boinet" alt="Quentin Boinet" width="200" height="auto" /></a>
                         </div>
 
                         <div class="col m5">
-                        <ul id="nav-mobile" class="hide-on-med-and-down">
+                            <ul id="nav-mobile" class="hide-on-med-and-down">
+                                <li><a href="">Le blog</a></li>
+                                <li><a href="">Se connecter</a></li>
+                                <li><a href="">S'inscrire</a></li>
+                            </ul>
+                        </div>
+
+                        <ul class="sidenav" id="mobile-demo">
+                            <li><a href="">Accueil</a></li>
+                            <li><a href="#about">A propos</a></li>
+                            <li><a href="#contact">Me contacter</a></li>
                             <li><a href="">Le blog</a></li>
                             <li><a href="">Se connecter</a></li>
                             <li><a href="">S'inscrire</a></li>
                         </ul>
-                        </div>
+
                     </div>
                 </div>
             </nav>
@@ -59,18 +87,18 @@
             <footer class="page-footer teal">
                 <div class="container">
                     <div class="row">
-                        <div class="col m3">
+                        <div class="col s12 m12 l3">
                             <h5>Contact</h5>
                             <p>+33 (0)7 67 17 24 29
                                 <br />quentinboinet@live.fr</p>
                         </div>
 
-                        <div class="col m6">
+                        <div class="col s12 m12 l6 hide-on-med-and-down">
                             <h5>A propos</h5>
                             <p>Etudiant en développement web spécialisé PHP/Symfony, n'hésitez pas à me contacter pour toute réalisation !</p>
                         </div>
 
-                        <div class="col m3">
+                        <div class="col s12 m12 l3">
                             <h5>Mes autres pages</h5>
                             <ul class="list-inline">
                                 <li>
