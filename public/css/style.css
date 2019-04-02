@@ -16,12 +16,21 @@ nav.nav-center ul li {
     display: inline;
     float: none;
 
-
 }
 nav.nav-center ul li a {
     display: inline-block;
     font-size: 1.3em;
     font-weight: 700;
+}
+
+ul li {
+    list-style-type: square!important;
+    margin-left: 50px;
+}
+
+h5 {
+    text-align:center;
+    padding-bottom:40px;
 }
 .brand-logo
 {
@@ -32,6 +41,9 @@ nav.nav-center ul li a {
 {
     background-color: rgba(64,210,196, 0.3);
     height: 100px;
+}
+header .banner {
+    margin-bottom: 30px;
 }
 footer
 {
@@ -46,4 +58,11 @@ footer
     display: inline-block;
     padding-right: 5px;
     padding-left: 5px;
+}
+
+#toast-container {
+    min-width: 10%;
+    top: 10%;
+    right: 50%;
+    transform: translateX(50%);
 }

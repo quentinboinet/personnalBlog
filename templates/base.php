@@ -17,6 +17,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <!--MMaterialize JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.sidenav');
@@ -35,6 +40,7 @@
     </head>
 
     <body>
+    {% block js %}{% endblock %}
         <header>
             <nav class="nav-center">
                 <div class="nav-wrapper teal">
@@ -43,14 +49,14 @@
 
                         <div class="col m5">
                             <ul id="nav-mobile" class="hide-on-med-and-down">
-                                <li><a href="">Accueil</a></li>
+                                <li><a href="index.php">Accueil</a></li>
                                 <li><a href="#about">A propos</a></li>
                                 <li><a href="#contact">Me contacter</a></li>
                             </ul>
                         </div>
 
                         <div class="col m2 hide-on-med-and-down">
-                            <a href="#" class="brand-logo center"><img src="public/images/logo4.png" title="Quentin Boinet" alt="Quentin Boinet" width="200" height="auto" /></a>
+                            <a href="index.php" class="brand-logo center"><img src="public/images/logo4.png" title="Quentin Boinet" alt="Quentin Boinet" width="200" height="auto" /></a>
                         </div>
 
                         <div class="col m5">
@@ -62,7 +68,7 @@
                         </div>
 
                         <ul class="sidenav" id="mobile-demo">
-                            <li><a href="">Accueil</a></li>
+                            <li><a href="index.php">Accueil</a></li>
                             <li><a href="#about">A propos</a></li>
                             <li><a href="#contact">Me contacter</a></li>
                             <li><a href="">Le blog</a></li>
@@ -83,6 +89,8 @@
             {% block content %}{% endblock %}
             </div>
         </main>
+
+        <div class="banner"></div>
 
             <footer class="page-footer teal">
                 <div class="container">
@@ -126,10 +134,6 @@
                     </div>
                 </div>
             </footer>
-
-        <!--Import jQuery before materialize.js-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     </body>
 </html>
