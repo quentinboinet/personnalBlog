@@ -18,3 +18,23 @@ function dbConnect()
         die('Erreur : '.$e->getMessage());
     }
 }
+
+function getPosts($start)
+{
+    $db = dbConnect();
+    $requete = $db->prepare('SELECT * FROM post ORDER BY creationDate DESC LIMIT :debut,5');
+
+    $start = ($start-1) * 5;
+    $requete->bindParam(':debut', $start, PDO::PARAM_INT);
+    $requete->execute();
+
+    return $requete;
+}
+
+function getNbPosts()
+{
+    $db = dbConnect();
+    //récupérer le nombre de posts présents
+    $nbPosts =  $db->query("SELECT COUNT(id) FROM post")->fetchColumn();
+    return $nbPosts;
+}

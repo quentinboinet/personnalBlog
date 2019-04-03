@@ -22,6 +22,14 @@ if (isset ($_GET['action']))
                 echo 'Erreur : tous les champs ne sont pas remplis !';
             }
         }
+    elseif ($_GET['action'] == 'blog') {
+        if (isset($_GET['p'])) {
+            homeBlog($_GET['p']);
+        }
+        else {
+            homeBlog(1);
+        }
+    }
 }
 
 else {

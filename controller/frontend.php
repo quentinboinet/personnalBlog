@@ -57,3 +57,18 @@ function sendContactMail($firstname, $lastname, $email, $subject, $content)
 
     mail($mail,$subject,$content,$header);
 }
+
+function homeBlog($start)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+
+    $posts = getPosts($start);
+    $nbPage = ceil(getNbPosts()/5);
+    $actualPage = $start;
+
+    $template = $twig->load('blogView.php');
+    echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage]);
+}
