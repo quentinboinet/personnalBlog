@@ -31,10 +31,43 @@ function getPosts($start)
     return $requete;
 }
 
+function getOnePost($id)
+{
+    $db = dbConnect();
+    $requete = $db->prepare('SELECT post.*, user.lastName, user.firstName FROM post JOIN user ON post.authorId = user.id WHERE post.Id = :identifiant');
+    $requete->bindParam(':identifiant', $id, PDO::PARAM_INT);
+    $requete->execute();
+
+    return $requete;
+}
+
 function getNbPosts()
 {
     $db = dbConnect();
     //récupérer le nombre de posts présents
     $nbPosts =  $db->query("SELECT COUNT(id) FROM post")->fetchColumn();
+
     return $nbPosts;
+}
+
+function getComments($postId)
+{
+    $db = dbConnect();
+    $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName FROM comment JOIN user ON comment.authorId = user.id WHERE comment.postId = :identifiant AND comment.status=1 ORDER BY comment.creationDate DESC');
+    $requete->bindParam(':identifiant', $postId, PDO::PARAM_INT);
+    $requete->execute();
+
+    return $requete;
+}
+
+function getNbComments($postId)
+{
+    $db = dbConnect();
+    //récupérer le nombre de commentaires présents pour un post
+    $nbComments =  $db->prepare("SELECT COUNT(id) FROM comment WHERE postId = :identifiant");
+    $nbComments->bindParam(':identifiant', $postId, PDO::PARAM_INT);
+    $nbComments->execute();
+    $nbComments = $nbComments->fetchColumn();
+
+    return $nbComments;
 }

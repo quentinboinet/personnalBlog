@@ -30,6 +30,14 @@ if (isset ($_GET['action']))
             homeBlog(1);
         }
     }
+    elseif ($_GET['action'] == 'viewPost') {
+        if (isset($_GET['i'])) {
+            viewPost($_GET['i']);
+        }
+        else {
+            echo 'Erreur : aucun identifiant de billet renseigné !';
+        }
+    }
 }
 
 else {
