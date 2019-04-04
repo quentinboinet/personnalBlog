@@ -72,3 +72,18 @@ function homeBlog($start)
     $template = $twig->load('blogView.php');
     echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage]);
 }
+
+function viewPost($id)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+
+    $post = getOnePost($id);
+    $comments = getComments($id);
+    $nbComments = getNbComments($id);
+
+    $template = $twig->load('postView.php');
+    echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
+}
