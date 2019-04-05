@@ -8,7 +8,7 @@
 
 <div class="row signup">
     <div class="col s12 m8 offset-m2">
-        <div class="card teal lighten-1">
+        <div class="card teal darken-1 z-depth-3">
             <form action="index.php?action=signup" method="post">
             <div class="card-content white-text">
                     <div class="row">
@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col s2 offset-s5">
                     <div class="input-field">
-                        <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+                        <button class="btn-floating btn-large pulse waves-effect waves-light" type="submit" name="action">
                             <i class="material-icons">check</i>
                         </button>
                     </div>
