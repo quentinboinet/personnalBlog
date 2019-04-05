@@ -62,7 +62,7 @@
                         <div class="col m5">
                             <ul id="nav-mobile" class="hide-on-med-and-down">
                                 <li><a href="index.php?action=blog">Le blog</a></li>
-                                <li><a href="">Se connecter</a></li>
+                                <li><a href="index.php?action=signup">Se connecter</a></li>
                                 <li><a href="">S'inscrire</a></li>
                             </ul>
                         </div>
@@ -73,7 +73,7 @@
                             <li><a href="#contact">Me contacter</a></li>
                             <li><a href="index.php?action=blog">Le blog</a></li>
                             <li><a href="">Se connecter</a></li>
-                            <li><a href="">S'inscrire</a></li>
+                            <li><a href="index.php?action=signup">S'inscrire</a></li>
                         </ul>
 
                     </div>

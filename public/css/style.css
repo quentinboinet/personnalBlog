@@ -70,3 +70,14 @@ footer
 main h5 {
     color: teal;
 }
+
+.signup label
+{
+    color: white!important;
+    font-size: 1.2em;
+}
+
+.signup i
+{
+    color :white!important;
+}

@@ -38,6 +38,9 @@ if (isset ($_GET['action']))
             echo 'Erreur : aucun identifiant de billet renseigné !';
         }
     }
+    elseif ($_GET['action'] == 'signup') {
+        signUp();
+    }
 }
 
 else {
