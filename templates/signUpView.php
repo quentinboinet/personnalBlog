@@ -2,6 +2,12 @@
 
 {% block title %} - S'inscrire {% endblock %}
 
+{% block js %}
+<!-- Bloc permettant d'ajouter et d'afficher le toaster si jamais on a validé le formulaire d'inscription -->
+{% if js == 'toaster' %}<script>M.toast({html: 'Votre inscription a bien été prise en compte ! Merci, vous pouvez désormais vous connecter.', displayLength: 8000, classes:'rounded'});</script>{% endif %}
+{% if js == 'toasterUserExist' %}<script>M.toast({html: 'Cette adresse e-mail est déjà utilisée !', displayLength: 8000, classes:'rounded'});</script>{% endif %}
+{% endblock %}
+
 {% block content %}
 
 <h5>Votre inscription en 2 minutes !</h5>
@@ -14,13 +20,13 @@
                     <div class="row">
                         <div class="input-field col s6">
                             <i class="material-icons prefix">account_circle</i>
-                            <input placeholder="Votre nom" name="first_name" id="first_name" type="text" class="validate" required>
-                            <label for="first_name">Nom :</label>
+                            <input placeholder="Votre nom" name="lastName" id="lastName" type="text" class="validate" required>
+                            <label for="lastName">Nom :</label>
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix">account_circle</i>
-                            <input placeholder="Votre prénom" name="last_name" id="last_name" type="text" class="validate" required>
-                            <label for="last_name">Prénom :</label>
+                            <input placeholder="Votre prénom" name="firstName" id="firstName" type="text" class="validate" required>
+                            <label for="firstName">Prénom :</label>
                         </div>
                     </div>
                     <div class="row">

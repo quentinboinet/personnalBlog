@@ -39,7 +39,19 @@ if (isset ($_GET['action']))
         }
     }
     elseif ($_GET['action'] == 'signup') {
-        signUp();
+        if (isset($_POST['lastName']) OR isset($_POST['firstName']) OR isset($_POST['email']) OR isset($_POST['password'])) {
+            $retour = registerUser($_POST['lastName'], $_POST['firstName'], $_POST['email'], $_POST['password']);
+            if ($retour == "OK") {
+                signUp('validate');
+            }
+            else
+            {
+                signUp('userExist');
+            }
+        }
+        else {
+            signUp('view');
+        }
     }
 }
 
