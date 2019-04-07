@@ -71,3 +71,33 @@ function getNbComments($postId)
 
     return $nbComments;
 }
+
+function saveUser($lastName, $firstName, $email, $pass)
+{
+    $passHash = password_hash($pass, PASSWORD_DEFAULT);
+
+    $db = dbConnect();
+
+    //vérifier qu'il n'y a pas déjà un utilisateur avec cette adresse e-mail d'enregistré
+    $nbUsers=  $db->prepare("SELECT COUNT(id) FROM user WHERE email = :mail");
+    $nbUsers->bindParam(':mail', $email, PDO::PARAM_STR);
+    $nbUsers->execute();
+    $nbUsers = $nbUsers->fetchColumn();
+
+    if ($nbUsers == 0)
+    {
+        $requete = $db->prepare("INSERT INTO user (email, password, lastName, firstName, type) VALUES (:email, :password, :lastN, :firstN, '0')");
+        $requete->bindParam(':email', $email, PDO::PARAM_STR);
+        $requete->bindParam(':password', $passHash, PDO::PARAM_STR);
+        $requete->bindParam(':lastN', $lastName, PDO::PARAM_STR);
+        $requete->bindParam(':firstN', $firstName, PDO::PARAM_STR);
+        $requete->execute();
+
+        return "OK";
+    }
+    else
+    {
+        return "UserAlreadyExist";
+    }
+
+}

@@ -87,3 +87,32 @@ function viewPost($id)
     $template = $twig->load('postView.php');
     echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
 }
+
+function signUp($action)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+
+    if ($action == "validate") {
+
+        $template = $twig->load('signUpView.php');
+        echo $template->render(['js' => 'toaster']);
+    }
+    elseif ($action == "userExist") {
+        $template = $twig->load('signUpView.php');
+        echo $template->render(['js' => 'toasterUserExist']);
+    }
+    else
+    {
+        $template = $twig->load('signUpView.php');
+        echo $template->render();
+    }
+}
+
+function registerUser($lastName, $firstName, $email, $password)
+{
+    $retour = saveUser($lastName, $firstName, $email, $password);
+    return $retour;
+}
