@@ -6,6 +6,8 @@
  * Time: 17:05
  */
 
+session_start();
+
 require('controller/frontend.php');
 
 if (isset ($_GET['action']))
@@ -52,6 +54,24 @@ if (isset ($_GET['action']))
         else {
             signUp('view');
         }
+    }
+    elseif ($_GET['action'] == "login") {
+        if (isset($_POST['email']) OR isset($_POST['password'])) {
+            $retour = userLogIn($_POST['email'], $_POST['password']);
+            if ($retour == "OK") {
+                logIn('validate');
+            }
+            else
+            {
+                logIn('userDoesNotExist');
+            }
+        }
+        else {
+            logIn('view');
+        }
+    }
+    elseif ($_GET['action'] == "logout") {
+        logOut();
     }
 }
 

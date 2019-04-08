@@ -65,8 +65,13 @@
                         <div class="col m5">
                             <ul id="nav-mobile" class="hide-on-med-and-down">
                                 <li><a href="index.php?action=blog">Le blog</a></li>
-                                <li><a href="">Se connecter</a></li>
+                                {% if session.mail is defined %}
+                                <li><a href="index.php?action=logout">Se déconnecter</a></li>
+                                {% endif %}
+                                {% if session.mail is not defined %}
+                                <li><a href="index.php?action=login">Se connecter</a></li>
                                 <li><a href="index.php?action=signup">S'inscrire</a></li>
+                                {% endif %}
                             </ul>
                         </div>
 
@@ -75,8 +80,13 @@
                             <li><a href="index.php#about">A propos</a></li>
                             <li><a href="index.php#contact">Me contacter</a></li>
                             <li><a href="index.php?action=blog">Le blog</a></li>
-                            <li><a href="">Se connecter</a></li>
+                            {% if session.mail is defined %}
+                            <li><a href="index.php?action=logout">Se déconnecter</a></li>
+                            {% endif %}
+                            {% if session.mail is not defined %}
+                            <li><a href="index.php?action=login">Se connecter</a></li>
                             <li><a href="index.php?action=signup">S'inscrire</a></li>
+                            {% endif %}
                         </ul>
 
                     </div>

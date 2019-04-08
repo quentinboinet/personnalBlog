@@ -118,16 +118,12 @@ function checkUserLogIn ($email, $password)
     }
     else
     {
-        $mdp = $db->prepare("SELECT * FROM user WHERE email = :mail");
+        $mdp = $db->prepare("SELECT password FROM user WHERE email = :mail");
         $mdp->bindParam(':mail', $email, PDO::PARAM_STR);
         $mdp->execute();
         $mdp = $mdp->fetch();
 
         if (password_verify($password, $mdp['password'])) {
-            $_SESSION['mail'] = $email;
-            $_SESSION['lastName'] = $mdp['lastName'];
-            $_SESSION['firstName'] = $mdp['firstName'];
-            $_SESSION['type'] = $mdp['type'];
             return "OK";
         }
         else {

@@ -6,7 +6,7 @@
  * Time: 18:04
  */
 
-require('model/frontend.php');
+require('model/backend.php');
 require_once 'vendor/autoload.php';
 
 
@@ -16,7 +16,6 @@ function home($action)
     $twig = new \Twig\Environment($loader, [
         'auto_reload' => 'true',
     ]);
-    $twig->addGlobal('session', $_SESSION);
 
     $template = $twig->load('homeView.php');
 
@@ -65,7 +64,6 @@ function homeBlog($start)
     $twig = new \Twig\Environment($loader, [
         'auto_reload' => 'true',
     ]);
-    $twig->addGlobal('session', $_SESSION);
 
     $posts = getPosts($start);
     $nbPage = ceil(getNbPosts()/5);
@@ -81,7 +79,6 @@ function viewPost($id)
     $twig = new \Twig\Environment($loader, [
         'auto_reload' => 'true',
     ]);
-    $twig->addGlobal('session', $_SESSION);
 
     $post = getOnePost($id);
     $comments = getComments($id);
@@ -97,7 +94,6 @@ function signUp($action)
     $twig = new \Twig\Environment($loader, [
         'auto_reload' => 'true',
     ]);
-    $twig->addGlobal('session', $_SESSION);
 
     if ($action == "validate") {
 
@@ -127,11 +123,10 @@ function logIn($action)
     $twig = new \Twig\Environment($loader, [
         'auto_reload' => 'true',
     ]);
-    $twig->addGlobal('session', $_SESSION);
 
     if ($action == "validate") {
-        $template = $twig->load('homeView.php');
-        echo $template->render(['js' => 'toasterLoginOK']);
+        $template = $twig->load('logInView.php');
+        echo $template->render();
     }
     elseif ($action == "userDoesNotExist") {
         $template = $twig->load('logInView.php');
@@ -148,16 +143,4 @@ function userLogIn ($mail, $pass)
 {
     $retour = checkUserLogIn($mail, $pass);
     return $retour;
-}
-
-function logOut()
-{
-    session_destroy();
-
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $template = $twig->load('homeView.php');
-    echo $template->render();
 }
