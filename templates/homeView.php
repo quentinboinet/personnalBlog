@@ -5,6 +5,9 @@
 {% block js %}
 <!-- Bloc permettant d'ajouter et d'afficher le toaster si jamais on a validé l'envoi du formulaire de contact -->
 {% if js == 'toaster' %}<script>M.toast({html: 'Votre message a bien été envoyé ! J\'y répondrais dans les plus brefs délais.', displayLength: 8000, classes:'rounded'});</script>{% endif %}
+
+{% if js == 'toasterLoginOK' %}<script>M.toast({html: 'Connexion réussie !', displayLength: 8000, classes:'rounded'});</script>{% endif %}
+
 {% endblock %}
 
 {% block content %}
