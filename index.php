@@ -9,6 +9,7 @@
 session_start();
 
 require('controller/frontend.php');
+require('controller/backend.php');
 
 if (isset ($_GET['action']))
 {
@@ -77,6 +78,23 @@ if (isset ($_GET['action']))
     }
     elseif ($_GET['action'] == "logout") {
         logOut();
+    }
+    elseif ($_GET['action'] == "adminPage") {
+        adminPage();
+    }
+    elseif ($_GET['action'] == "userManagement") {
+        userManagement();
+    }
+    elseif ($_GET['action'] == "deleteUser") {
+        if (isset($_GET['i'])) {
+            deleteUser($_GET['i']);
+        }
+        else {
+            deleteUser("0");
+        }
+    }
+    elseif ($_GET['action'] == "commentManagement") {
+        commentManagement();
     }
 }
 
