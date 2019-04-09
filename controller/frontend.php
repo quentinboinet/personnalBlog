@@ -91,6 +91,35 @@ function viewPost($id)
     echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
 }
 
+function addComment($id, $comment)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $retour = saveComment($id, $comment);
+    if ($retour == "commentAdded")
+    {
+        $post = getOnePost($id);
+        $comments = getComments($id);
+        $nbComments = getNbComments($id);
+
+        $template = $twig->load('postView.php');
+        echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentAdded']);
+    }
+    elseif ($retour == "commentAddedValidation")
+    {
+        $post = getOnePost($id);
+        $comments = getComments($id);
+        $nbComments = getNbComments($id);
+
+        $template = $twig->load('postView.php');
+        echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments,  'js' => 'toasterCommentValidation']);
+    }
+}
+
 function signUp($action)
 {
     $loader = new \Twig\Loader\FilesystemLoader('templates');

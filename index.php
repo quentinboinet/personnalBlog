@@ -34,7 +34,12 @@ if (isset ($_GET['action']))
     }
     elseif ($_GET['action'] == 'viewPost') {
         if (isset($_GET['i'])) {
-            viewPost($_GET['i']);
+            if (isset($_POST['comment'])) {
+                addComment($_GET['i'], $_POST['comment']);
+            }
+            else {
+                viewPost($_GET['i']);
+            }
         }
         else {
             echo 'Erreur : aucun identifiant de billet renseigné !';
