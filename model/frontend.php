@@ -64,7 +64,7 @@ function getNbComments($postId)
 {
     $db = dbConnect();
     //récupérer le nombre de commentaires présents pour un post
-    $nbComments =  $db->prepare("SELECT COUNT(id) FROM comment WHERE postId = :identifiant");
+    $nbComments =  $db->prepare("SELECT COUNT(id) FROM comment WHERE postId = :identifiant AND status=1");
     $nbComments->bindParam(':identifiant', $postId, PDO::PARAM_INT);
     $nbComments->execute();
     $nbComments = $nbComments->fetchColumn();
@@ -124,6 +124,7 @@ function checkUserLogIn ($email, $password)
         $mdp = $mdp->fetch();
 
         if (password_verify($password, $mdp['password'])) {
+            $_SESSION['userId'] = $mdp['id'];
             $_SESSION['mail'] = $email;
             $_SESSION['lastName'] = $mdp['lastName'];
             $_SESSION['firstName'] = $mdp['firstName'];
@@ -134,4 +135,39 @@ function checkUserLogIn ($email, $password)
             return "UserDoesNotExist";
         }
     }
+}
+
+function saveComment($postId, $contenu)
+{
+    $db = dbConnect();
+
+    if ($_SESSION['type'] == 1) //si c'est un administrateur, alors on valide automatiquement le commentaire
+    {
+        $status = 1;
+    }
+    else //sinon on mets le commentaire en attente de validation
+    {
+        $status = 0;
+    }
+
+    $auteur = $_SESSION['userId'];
+    $creationDate = time();
+
+    $requete = $db->prepare("INSERT INTO comment (postId, authorId, content, creationDate, status) VALUES (:postId, :authorId, :content, :creationDate, :status)");
+    $requete->bindParam(':postId', $postId, PDO::PARAM_INT);
+    $requete->bindParam(':authorId', $auteur, PDO::PARAM_INT);
+    $requete->bindParam(':content', $contenu, PDO::PARAM_STR);
+    $requete->bindParam(':creationDate', $creationDate, PDO::PARAM_INT);
+    $requete->bindParam(':status', $status, PDO::PARAM_INT);
+    $requete->execute();
+
+    if ($_SESSION['type'] == 1) //si c'est un administrateur, alors on valide automatiquement le commentaire
+    {
+        return "commentAdded";
+    }
+    else //sinon on mets le commentaire en attente de validation
+    {
+        return "commentAddedValidation";
+    }
+
 }
