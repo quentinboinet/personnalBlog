@@ -145,6 +145,12 @@
                             </ul>
                         </div>
                     </div>
+                    {% if session.mail is defined and session.type == 1 %}
+                    <div class="row">
+                        <div class="divider"></div>
+                        <p><a  style="color:black;" href="index.php?action=adminPage" title="Administrez le blog">Administration</a></p>
+                    </div>
+                    {% endif %}
                 </div>
             </footer>
 

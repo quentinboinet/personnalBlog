@@ -6,128 +6,76 @@
  * Time: 17:13
  */
 
-function dbConnect()
+function getUsersList()
 {
-    try
+    $db = dbConnect();
+    $requete = $db->prepare('SELECT * FROM user ORDER BY id DESC');
+    $requete->execute();
+
+    return $requete;
+}
+
+function deleteOneUser($userId)
+{
+    $db = dbConnect();
+
+    //on vérifie que cet utilisateur existe et que ce n'est pas nous
+    if ($_SESSION['userId'] != $userId)
     {
-        $db = new PDO('mysql:host=localhost;dbname=personnalBlog;charset=utf8', 'root', '');
-        return $db;
+        $nbUser =  $db->prepare("SELECT COUNT(id) FROM user WHERE id = :userId");
+        $nbUser->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $nbUser->execute();
+        $nbUser = $nbUser->fetchColumn();
+
+        if ($nbUser == 1)
+        {
+            $requete = $db->prepare('DELETE FROM user WHERE id = :userId');
+            $requete->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $requete->execute();
+
+            return "OK";
+        }
+        else
+        {
+            return "noUser";
+        }
     }
-    catch(Exception $e)
+    else
     {
-        die('Erreur : '.$e->getMessage());
+        return "userIsCurrent";
     }
 }
 
-function getPosts($start)
+function getNbUsers()
 {
     $db = dbConnect();
-    $requete = $db->prepare('SELECT * FROM post ORDER BY creationDate DESC LIMIT :debut,5');
 
-    $start = ($start-1) * 5;
-    $requete->bindParam(':debut', $start, PDO::PARAM_INT);
+    $nbUser =  $db->prepare("SELECT COUNT(id) FROM user");
+    $nbUser->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $nbUser->execute();
+    $nbUser = $nbUser->fetchColumn();
+    $nbUser--; //on enlève 1 car on ne compte pas l'utilisateur actuellement connecté
+
+    return $nbUser;
+}
+
+function getCommmentsPendingApproval()
+{
+    $db = dbConnect();
+    $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName, post.title FROM comment JOIN user JOIN post ON post.id = comment.postId WHERE comment.status=0 ORDER BY comment.creationDate DESC');
     $requete->execute();
 
     return $requete;
 }
 
-function getOnePost($id)
+function getNbCommentsPendingApproval()
 {
     $db = dbConnect();
-    $requete = $db->prepare('SELECT post.*, user.lastName, user.firstName FROM post JOIN user ON post.authorId = user.id WHERE post.Id = :identifiant');
-    $requete->bindParam(':identifiant', $id, PDO::PARAM_INT);
-    $requete->execute();
 
-    return $requete;
-}
-
-function getNbPosts()
-{
-    $db = dbConnect();
-    //récupérer le nombre de posts présents
-    $nbPosts =  $db->query("SELECT COUNT(id) FROM post")->fetchColumn();
-
-    return $nbPosts;
-}
-
-function getComments($postId)
-{
-    $db = dbConnect();
-    $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName FROM comment JOIN user ON comment.authorId = user.id WHERE comment.postId = :identifiant AND comment.status=1 ORDER BY comment.creationDate DESC');
-    $requete->bindParam(':identifiant', $postId, PDO::PARAM_INT);
-    $requete->execute();
-
-    return $requete;
-}
-
-function getNbComments($postId)
-{
-    $db = dbConnect();
-    //récupérer le nombre de commentaires présents pour un post
-    $nbComments =  $db->prepare("SELECT COUNT(id) FROM comment WHERE postId = :identifiant");
-    $nbComments->bindParam(':identifiant', $postId, PDO::PARAM_INT);
+    $nbComments =  $db->prepare("SELECT COUNT(id) FROM comment WHERE status=0");
+    $nbComments->bindParam(':userId', $userId, PDO::PARAM_INT);
     $nbComments->execute();
     $nbComments = $nbComments->fetchColumn();
 
     return $nbComments;
-}
-
-function saveUser($lastName, $firstName, $email, $pass)
-{
-    $passHash = password_hash($pass, PASSWORD_DEFAULT);
-
-    $db = dbConnect();
-
-    //vérifier qu'il n'y a pas déjà un utilisateur avec cette adresse e-mail d'enregistré
-    $nbUsers=  $db->prepare("SELECT COUNT(id) FROM user WHERE email = :mail");
-    $nbUsers->bindParam(':mail', $email, PDO::PARAM_STR);
-    $nbUsers->execute();
-    $nbUsers = $nbUsers->fetchColumn();
-
-    if ($nbUsers == 0)
-    {
-        $requete = $db->prepare("INSERT INTO user (email, password, lastName, firstName, type) VALUES (:email, :password, :lastN, :firstN, '0')");
-        $requete->bindParam(':email', $email, PDO::PARAM_STR);
-        $requete->bindParam(':password', $passHash, PDO::PARAM_STR);
-        $requete->bindParam(':lastN', $lastName, PDO::PARAM_STR);
-        $requete->bindParam(':firstN', $firstName, PDO::PARAM_STR);
-        $requete->execute();
-
-        return "OK";
-    }
-    else
-    {
-        return "UserAlreadyExist";
-    }
-
-}
-
-function checkUserLogIn ($email, $password)
-{
-    $db = dbConnect();
-
-    //vérifier que les identifiants entrés sont les bon
-    $nbUsers=  $db->prepare("SELECT COUNT(id) FROM user WHERE email = :mail");
-    $nbUsers->bindParam(':mail', $email, PDO::PARAM_STR);
-    $nbUsers->execute();
-    $nbUsers = $nbUsers->fetchColumn();
-
-    if ($nbUsers == 0) //aucun utilisateur avec mail/pass correspondant
-    {
-        return "UserDoesNotExist";
-    }
-    else
-    {
-        $mdp = $db->prepare("SELECT password FROM user WHERE email = :mail");
-        $mdp->bindParam(':mail', $email, PDO::PARAM_STR);
-        $mdp->execute();
-        $mdp = $mdp->fetch();
-
-        if (password_verify($password, $mdp['password'])) {
-            return "OK";
-        }
-        else {
-            return "UserDoesNotExist";
-        }
-    }
 }
