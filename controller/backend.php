@@ -72,3 +72,51 @@ function commentManagement()
     $template = $twig->load('commentManagementView.php');
     echo $template->render(['comments' => $comments, 'nbComment' => $nbComments]);
 }
+
+function approveComment($id)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('commentManagementView.php');
+    $retour = approveOneComment($id);
+
+    $comments = getCommmentsPendingApproval();
+    $nbComments = getNbCommentsPendingApproval();
+
+    if ($retour == "OK")
+    {
+        echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentApproved']);
+    }
+    else
+    {
+        echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentNotExist']);
+    }
+}
+
+function deleteComment($id)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('commentManagementView.php');
+    $retour = deleteOneComment($id);
+
+    $comments = getCommmentsPendingApproval();
+    $nbComments = getNbCommentsPendingApproval();
+
+    if ($retour == "OK")
+    {
+        echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentDeleted']);
+    }
+    else
+    {
+        echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentNotExist']);
+    }
+}

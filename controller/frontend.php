@@ -31,52 +31,27 @@ function home($action)
 
 function sendContactMail($firstname, $lastname, $email, $subject, $content)
 {
-    /*
-    ini_set( 'display_errors', 1 );
-    error_reporting( E_ALL );
-
-    $mail = 'quentinboinet@live.fr'; // Déclaration de l'adresse de destination.
-    if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
-    {
-        $passage_ligne = "\r\n";
-    }
-    else
-    {
-        $passage_ligne = "\n";
-    }
-
-
-    //=====Création de la boundary
-    $boundary = "-----=".md5(rand());
-    //==========
-
-    //=====Création du header de l'e-mail.
-    $header = "From: \"" . $firstname . " " . $lastname . "\"<quentinboinet@blog.fr>".$passage_ligne;
-    $header.= "Reply-to: \"" . $firstname . " " . $lastname ."\" <" . $email . ">".$passage_ligne;
-    $header.= "MIME-Version: 1.0".$passage_ligne;
-    $header.= "Content-Type: multipart/alternative;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;
-
-
-    mail($mail,$subject,$content,$header);
-    */
-
     // Create the Transport
-    $transport = (new Swift_SmtpTransport('ssl0.ovh.net', 587))
+    $transport = (new Swift_SmtpTransport('smtp.quentinboinet.fr', 587))
         ->setUsername('contact@quentinboinet.fr')
         ->setPassword('PNCfGcV2YiDc')
     ;
 
-// Create the Mailer using your created Transport
+    // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
 
-// Create a message
-    $message = (new Swift_Message('Wonderful Subject'))
-        ->setFrom(['contact@quentinboinet.fr' => 'Quentin Boinet'])
-        ->setTo(['quentinboinet@live.fr' => 'A name'])
-        ->setBody('Here is the message itself')
+    $body = "Bonjour, vous avez reçu un message de contact sur votre blog. <br />";
+    $body .= "<br /> De la part de : " . $firstname . " " . $lastname . " (" . $email . ") : <br /><br />";
+    $body .= "<p>" . nl2br($content) . "</p>";
+
+    // Create a message
+    $message = (new Swift_Message($subject))
+        ->setFrom(['contact@quentinboinet.fr' => 'Contact - Blog Quentin Boinet'])
+        ->setTo(['quentinboinet@live.fr' => 'Quentin Boinet'])
+        ->addPart($body, 'text/html');
     ;
 
-// Send the message
+    // Send the message
     $result = $mailer->send($message);
 }
 
