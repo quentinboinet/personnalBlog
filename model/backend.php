@@ -79,3 +79,53 @@ function getNbCommentsPendingApproval()
 
     return $nbComments;
 }
+
+function approveOneComment($commentId)
+{
+    $db = dbConnect();
+
+    //on vérifie que ce commentaire existe
+    $nbComment =  $db->prepare("SELECT COUNT(id) FROM comment WHERE id = :commentId");
+    $nbComment->bindParam(':commentId', $commentId, PDO::PARAM_INT);
+    $nbComment->execute();
+    $nbComment = $nbComment->fetchColumn();
+
+    if ($nbComment == 1)
+    {
+        $requete = $db->prepare('UPDATE comment SET status="1" WHERE id = :commentId');
+        $requete->bindParam(':commentId', $commentId, PDO::PARAM_INT);
+        $requete->execute();
+
+        return "OK";
+    }
+    else
+    {
+        return "noCommenr";
+    }
+
+}
+
+function deleteOneComment($commentId)
+{
+    $db = dbConnect();
+
+    //on vérifie que ce commentaire existe
+    $nbComment =  $db->prepare("SELECT COUNT(id) FROM comment WHERE id = :commentId");
+    $nbComment->bindParam(':commentId', $commentId, PDO::PARAM_INT);
+    $nbComment->execute();
+    $nbComment = $nbComment->fetchColumn();
+
+    if ($nbComment == 1)
+    {
+        $requete = $db->prepare('DELETE FROM comment WHERE id = :commentId');
+        $requete->bindParam(':commentId', $commentId, PDO::PARAM_INT);
+        $requete->execute();
+
+        return "OK";
+    }
+    else
+    {
+        return "noCommenr";
+    }
+
+}

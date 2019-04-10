@@ -1,11 +1,12 @@
 {% extends "base.php" %}
 
-{% block title %} - Gestion des utilisateurs {% endblock %}
+{% block title %} - Gestion des commentaires {% endblock %}
 
 {% block js %}
 
-{% if js == 'toasterUserDeleted' %}<script>M.toast({html: "L'utilisateur a correctement été suppprimé !", displayLength: 8000, classes:'rounded'});</script>{% endif %}
-{% if js == 'toasterUserNotDeleted' %}<script>M.toast({html: "Suppression de l'utilisateur impossible ! Veuillez réessayer.", displayLength: 8000, classes:'rounded'});</script>{% endif %}
+{% if js == 'toasterCommentApproved' %}<script>M.toast({html: "Le commentaire a bien été validé !", displayLength: 8000, classes:'rounded'});</script>{% endif %}
+{% if js == 'toasterCommentDeleted' %}<script>M.toast({html: "Le commentaire a bien été supprimé !", displayLength: 8000, classes:'rounded'});</script>{% endif %}
+{% if js == 'toasterCommentNotExist' %}<script>M.toast({html: "Aucun commentaire ne porte cet identifiant ! Veuillez réessayer", displayLength: 8000, classes:'rounded'});</script>{% endif %}
 
 {% endblock %}
 

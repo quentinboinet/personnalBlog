@@ -96,6 +96,22 @@ if (isset ($_GET['action']))
     elseif ($_GET['action'] == "commentManagement") {
         commentManagement();
     }
+    elseif ($_GET['action'] == "approveComment") {
+        if (isset($_GET['i'])) {
+            approveComment($_GET['i']);
+        }
+        else {
+            echo 'Erreur : aucun identifiant de commentaire renseigné !';
+        }
+    }
+    elseif ($_GET['action'] == "deleteComment") {
+        if (isset($_GET['i'])) {
+            deleteComment($_GET['i']);
+        }
+        else {
+            echo 'Erreur : aucun identifiant de commentaire renseigné !';
+        }
+    }
 }
 
 else {
