@@ -31,6 +31,7 @@ function home($action)
 
 function sendContactMail($firstname, $lastname, $email, $subject, $content)
 {
+    /*
     ini_set( 'display_errors', 1 );
     error_reporting( E_ALL );
 
@@ -57,6 +58,26 @@ function sendContactMail($firstname, $lastname, $email, $subject, $content)
 
 
     mail($mail,$subject,$content,$header);
+    */
+
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport('ssl0.ovh.net', 587))
+        ->setUsername('contact@quentinboinet.fr')
+        ->setPassword('PNCfGcV2YiDc')
+    ;
+
+// Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+// Create a message
+    $message = (new Swift_Message('Wonderful Subject'))
+        ->setFrom(['contact@quentinboinet.fr' => 'Quentin Boinet'])
+        ->setTo(['quentinboinet@live.fr' => 'A name'])
+        ->setBody('Here is the message itself')
+    ;
+
+// Send the message
+    $result = $mailer->send($message);
 }
 
 function homeBlog($start)

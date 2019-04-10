@@ -30,6 +30,8 @@
         </div>
     </div>
 
+    {% endfor %}
+
     <h5>Commentaires</h5>
 
     {% if nbComments == 0 %} <p><b>Aucun commentaire !</b></p>{% endif %}
@@ -73,6 +75,5 @@
     </div>
     {% endif %}
 
-    {% endfor %}
 
 {% endblock %}

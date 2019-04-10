@@ -34,7 +34,7 @@ function getPosts($start)
 function getOnePost($id)
 {
     $db = dbConnect();
-    $requete = $db->prepare('SELECT post.*, user.lastName, user.firstName FROM post JOIN user ON post.authorId = user.id WHERE post.Id = :identifiant');
+    $requete = $db->prepare('SELECT post.*, user.lastName, user.firstName FROM post JOIN user ON post.authorId = user.id WHERE post.id = :identifiant');
     $requete->bindParam(':identifiant', $id, PDO::PARAM_INT);
     $requete->execute();
 
@@ -53,7 +53,7 @@ function getNbPosts()
 function getComments($postId)
 {
     $db = dbConnect();
-    $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName FROM comment JOIN user ON comment.authorId = user.id WHERE comment.postId = :identifiant AND comment.status=1 ORDER BY comment.creationDate DESC');
+    $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName FROM comment JOIN user ON comment.authorId = user.id WHERE comment.postId = :identifiant AND comment.status="1" ORDER BY comment.creationDate DESC');
     $requete->bindParam(':identifiant', $postId, PDO::PARAM_INT);
     $requete->execute();
 
