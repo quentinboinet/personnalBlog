@@ -10,7 +10,7 @@ function dbConnect()
 {
     try
     {
-        $db = new PDO('mysql:host=localhost;dbname=personnalBlog;charset=utf8', 'root', '');
+        $db = new PDO('mysql:host=quentinbae371.mysql.db;dbname=quentinbae371;charset=utf8', 'quentinbae371', 'woargsE1');
         return $db;
     }
     catch(Exception $e)

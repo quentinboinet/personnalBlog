@@ -34,6 +34,7 @@ function sendContactMail($firstname, $lastname, $email, $subject, $content)
     ini_set( 'display_errors', 1 );
     error_reporting( E_ALL );
 
+    /*
     $mail = 'quentinboinet@live.fr'; // Déclaration de l'adresse de destination.
     if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)) // On filtre les serveurs qui rencontrent des bogues.
     {
@@ -57,6 +58,26 @@ function sendContactMail($firstname, $lastname, $email, $subject, $content)
 
 
     mail($mail,$subject,$content,$header);
+    */
+
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465))
+        ->setUsername('boinet2@gmail.com')
+        ->setPassword('woargses')
+    ;
+
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+    // Create a message
+    $message = (new Swift_Message('Wonderful Subject'))
+        ->setFrom(['john@doe.com' => 'John Doe'])
+        ->setTo(['quentinboinet@live.fr' => 'A name'])
+        ->setBody('Here is the message itself')
+    ;
+
+// Send the message
+    $result = $mailer->send($message);
 }
 
 function homeBlog($start)
