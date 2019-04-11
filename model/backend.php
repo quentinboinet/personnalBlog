@@ -129,3 +129,51 @@ function deleteOneComment($commentId)
     }
 
 }
+
+function deleteOnePost($postId)
+{
+    $db = dbConnect();
+
+    //on vérifie que ce ppost existe
+    $nbPost =  $db->prepare("SELECT COUNT(id) FROM post WHERE id = :postId");
+    $nbPost->bindParam(':postId', $postId, PDO::PARAM_INT);
+    $nbPost->execute();
+    $nbPost = $nbPost->fetchColumn();
+
+    if ($nbPost == 1)
+    {
+        $requete = $db->prepare('DELETE FROM post WHERE id = :postId');
+        $requete->bindParam(':postId', $postId, PDO::PARAM_INT);
+        $requete->execute();
+
+        //ne pas oublier de supprimer aussi les commentaires de ce post
+        $requete = $db->prepare('DELETE FROM comment WHERE postId = :postId');
+        $requete->bindParam(':postId', $postId, PDO::PARAM_INT);
+        $requete->execute();
+
+        return "OK";
+    }
+    else
+    {
+        return "noPost";
+    }
+
+}
+
+function editSinglePost($title, $chapo, $content, $id)
+{
+    $db = dbConnect();
+
+    $time = time();
+
+    $requete = $db->prepare("UPDATE post SET title = :title, chapo = :chapo, content = :content, lastModifiedDate = :time WHERE id = :identifiant");
+    $requete->bindParam(':title', $title, PDO::PARAM_STR);
+    $requete->bindParam(':chapo', $chapo, PDO::PARAM_STR);
+    $requete->bindParam(':content', $content, PDO::PARAM_STR);
+    $requete->bindParam(':time', $time, PDO::PARAM_INT);
+    $requete->bindParam(':identifiant', $id, PDO::PARAM_INT);
+    $requete->execute();
+
+    return "OK";
+
+}
