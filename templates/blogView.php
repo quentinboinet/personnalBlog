@@ -2,6 +2,13 @@
 
 {% block title %} - Le blog {% endblock %}
 
+{% block js %}
+
+{% if js == 'toasterPostDeleted' %}<script>M.toast({html: "Post bien supprimé !", displayLength: 8000, classes:'rounded'});</script>{% endif %}
+{% if js == 'toasterNoPost' %}<script>M.toast({html: "Erreur lors de la suppression du post ! Veuillez réessayer.", displayLength: 8000, classes:'rounded'});</script>{% endif %}
+
+{% endblock %}
+
 {% block content %}
 
     <h5>Les derniers articles</h5>

@@ -64,7 +64,7 @@ function homeBlog($start)
     $twig->addGlobal('session', $_SESSION);
 
     $posts = getPosts($start);
-    $nbPage = ceil(getNbPosts()/5);
+    $nbPage = ceil(getNbPosts(0)/5);
     $actualPage = $start;
 
     $template = $twig->load('blogView.php');

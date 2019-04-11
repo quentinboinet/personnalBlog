@@ -7,6 +7,7 @@
  */
 
 require('model/backend.php');
+require_once 'model/frontend.php';
 require_once 'vendor/autoload.php';
 
 
@@ -118,5 +119,88 @@ function deleteComment($id)
     else
     {
         echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentNotExist']);
+    }
+}
+
+function editPost($id)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $nbPost = getNbPosts($id);
+
+    if ($nbPost == 1)//si l'id du post existe bien
+    {
+        $postInfo = getOnePost($id);
+
+        $template = $twig->load('editPostView.php');
+        echo $template->render(['datas' => $postInfo]);
+    }
+    else
+    {
+
+    }
+}
+
+function editOnePost($title, $chapo, $content, $postId)
+{
+    $nbPost = getNbPosts($postId);
+
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    if ($nbPost == 1)//si l'id du post existe bien
+    {
+        $retour = editSinglePost($title, $chapo, $content, $postId);
+        if ($retour == "OK")
+        {
+            $post = getOnePost($postId);
+            $comments = getComments($postId);
+            $nbComments = getNbComments($postId);
+
+            $template = $twig->load('postView.php');
+            echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterPostEdited']);
+        }
+        else
+        {
+
+        }
+    }
+    else
+    {
+
+    }
+
+}
+function deletePost($id)
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $retour = deleteOnePost($id);
+
+    $start = 1;
+    $posts = getPosts($start);
+    $nbPage = ceil(getNbPosts()/5);
+    $actualPage = $start;
+
+    $template = $twig->load('blogView.php');
+
+    if ($retour == "OK")
+    {
+        echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage, 'js' => 'toasterPostDeleted']);
+    }
+    else
+    {
+        echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage, 'js' => 'toasterNoPost']);
     }
 }

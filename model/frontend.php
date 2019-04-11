@@ -41,11 +41,22 @@ function getOnePost($id)
     return $requete;
 }
 
-function getNbPosts()
+function getNbPosts($id)
 {
     $db = dbConnect();
-    //récupérer le nombre de posts présents
-    $nbPosts =  $db->query("SELECT COUNT(id) FROM post")->fetchColumn();
+
+    if ($id == 0)
+    {
+        //récupérer le nombre de posts présents
+        $nbPosts =  $db->query("SELECT COUNT(id) FROM post")->fetchColumn();
+    }
+    else
+    {
+        $nbPosts = $db->prepare('SELECT COUNT(id) FROM post WHERE id = :identifiant');
+        $nbPosts->bindParam(':identifiant', $id, PDO::PARAM_INT);
+        $nbPosts->execute();
+        $nbPosts = $nbPosts->fetchColumn();
+    }
 
     return $nbPosts;
 }

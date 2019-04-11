@@ -112,6 +112,29 @@ if (isset ($_GET['action']))
             echo 'Erreur : aucun identifiant de commentaire renseigné !';
         }
     }
+    elseif ($_GET['action'] == "editPost") {
+        if (isset($_GET['i'])) {
+            if (isset($_POST['title']) OR isset($_POST['content']) OR isset($_POST['chapo'])) {
+                editOnePost($_POST['title'], $_POST['chapo'], $_POST['content'], $_GET['i']);
+
+            }
+            else {
+                editPost($_GET['i']);
+            }
+        }
+        else {
+            echo 'Erreur : aucun identifiant de post renseigné !';
+        }
+    }
+    elseif ($_GET['action'] == "deletePost") {
+        if (isset($_GET['i'])) {
+            deletePost($_GET['i']);
+        }
+        else {
+            echo 'Erreur : aucun identifiant de post renseigné !';
+        }
+    }
+
 }
 
 else {

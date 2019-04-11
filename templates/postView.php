@@ -5,12 +5,31 @@
 {% block js %}
 {% if js == 'toasterCommentAdded' %}<script>M.toast({html: "Votre commentaire a bien été posté ! Merci pour votre contribution.", displayLength: 8000, classes:'rounded'});</script>{% endif %}
 {% if js == 'toasterCommentValidation' %}<script>M.toast({html: "Merci pour votre contribution ! Le commentaire va être étudié puis validé dans les plus brefs délais.", displayLength: 8000, classes:'rounded'});</script>{% endif %}
-
+{% if js == 'toasterPostEdited' %}<script>M.toast({html: "Article correctement mis à jour !", displayLength: 8000, classes:'rounded'});</script>{% endif %}
 {% endblock %}
 
 {% block content %}
 
     {% for data in datas %}
+
+    {% if session.mail is defined and session.type == 1 %}
+    <br />
+    <div class="row center">
+        <ul class="list-inline">
+            <li>
+                <a href="index.php?action=editPost&i={{ data.id }}">
+                    <i class="material-icons">edit</i> <br />Modifier
+                </a>
+            </li>
+            <li>
+                <a href="index.php?action=deletePost&i={{ data.id }}">
+                    <i class="material-icons">delete</i> <br />Supprimer
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="divider"></div>
+    {% endif %}
 
     <!-- affichage des infos sur le post -->
     <div class="row">
@@ -21,10 +40,10 @@
                 </div>
                 <div class="card-content">
                     <span class="card-title">{{ data.title }}</span>
-                    <p><b>{{ data.chapo }}</b></p><br />
+                    <p><b>{{ data.chapo | nl2br }}</b></p><br />
                     <p><i>{{ data.firstName }} {{ data.lastName }} | {{ data.lastModifiedDate | date("d/m/Y", "Europe/Paris") }} à {{ data.lastModifiedDate | date("H:i") }} | {{ nbComments }} commentaires</i></p><br/>
                     <div class="divider"></div>
-                    <br /><p>{{ data.content }}</p>
+                    <br /><p>{{ data.content | nl2br }}</p>
                 </div>
             </div>
         </div>
@@ -41,7 +60,7 @@
         <div class="col s12">
             <div class="section">
                 <p><b>{{ comment.firstName }} {{ comment.lastName }} | {{ comment.creationDate | date("d/m/Y", "Europe/Paris") }} à {{ comment.creationDate | date("H:i") }}</b><br/>
-                <i>{{ comment.content }}</i></p>
+                <i>{{ comment.content | nl2br}}</i></p>
                 <div class="divider"></div>
             </div>
         </div>
