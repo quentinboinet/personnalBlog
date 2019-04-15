@@ -61,7 +61,7 @@ Class Backend extends Base
     public function getCommmentsPendingApproval()
     {
         $db = $this->dbConnect();
-        $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName, post.title FROM comment JOIN user JOIN post ON post.id = comment.postId WHERE comment.status=0 ORDER BY comment.creationDate DESC');
+        $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName, post.title FROM comment JOIN user ON user.id = comment.authorId JOIN post ON post.id = comment.postId WHERE comment.status=0 ORDER BY comment.creationDate DESC');
         $requete->execute();
 
         return $requete;

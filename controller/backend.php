@@ -140,10 +140,11 @@ function editPost($id)
 
     $front = new Frontend();
     $nbPost = $front->getNbPosts($id);
+    $authorId = $front->getPostAuthorId($id);
 
     if ($nbPost == 1)//si l'id du post existe bien
     {
-        $postInfo = $front->getOnePost($id);
+        $postInfo = $front->getOnePost($id, $authorId);
 
         $template = $twig->load('editPostView.php');
         echo $template->render(['datas' => $postInfo]);
@@ -173,7 +174,9 @@ function editOnePost($title, $chapo, $content, $postId)
 
         if ($retour == "OK")
         {
-            $post = $front->getOnePost($postId);
+            $authorId = $front->getPostAuthorId($postId);
+
+            $post = $front->getOnePost($postId,$authorId);
             $comments = $front->getComments($postId);
             $nbComments = $front->getNbComments($postId);
 
