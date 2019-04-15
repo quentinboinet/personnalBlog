@@ -134,6 +134,14 @@ if (isset ($_GET['action']))
             echo 'Erreur : aucun identifiant de post renseigné !';
         }
     }
+    elseif ($_GET['action'] == "addPost") {
+        if (isset($_POST['title']) OR isset($_POST['image']) OR isset($_POST['content']) OR isset($_POST['chapo'])) {
+            addOnePost($_POST['title'], $_POST['chapo'], $_POST['content'], $_POST['image']);
+        }
+        else {
+            addPost();
+        }
+    }
 
 }
 

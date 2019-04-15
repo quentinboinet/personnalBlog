@@ -79,7 +79,9 @@ function viewPost($id)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
-    $post = getOnePost($id);
+    $authorID = getPostAuthorId($id);
+
+    $post = getOnePost($id, $authorID);
     $comments = getComments($id);
     $nbComments = getNbComments($id);
 
@@ -95,10 +97,12 @@ function addComment($id, $comment)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
+    $userStatus = getPostAuthorId($id);
+
     $retour = saveComment($id, $comment);
     if ($retour == "commentAdded")
     {
-        $post = getOnePost($id);
+        $post = getOnePost($id, $userStatus);
         $comments = getComments($id);
         $nbComments = getNbComments($id);
 
@@ -107,7 +111,7 @@ function addComment($id, $comment)
     }
     elseif ($retour == "commentAddedValidation")
     {
-        $post = getOnePost($id);
+        $post = getOnePost($id, $userStatus);
         $comments = getComments($id);
         $nbComments = getNbComments($id);
 

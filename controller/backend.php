@@ -134,7 +134,8 @@ function editPost($id)
 
     if ($nbPost == 1)//si l'id du post existe bien
     {
-        $postInfo = getOnePost($id);
+        $authorId = getPostAuthorId($id);
+        $postInfo = getOnePost($id, $authorId);
 
         $template = $twig->load('editPostView.php');
         echo $template->render(['datas' => $postInfo]);
@@ -160,7 +161,9 @@ function editOnePost($title, $chapo, $content, $postId)
         $retour = editSinglePost($title, $chapo, $content, $postId);
         if ($retour == "OK")
         {
-            $post = getOnePost($postId);
+            $authorId = getPostAuthorId($postId);
+
+            $post = getOnePost($postId, $authorId);
             $comments = getComments($postId);
             $nbComments = getNbComments($postId);
 
@@ -190,7 +193,7 @@ function deletePost($id)
 
     $start = 1;
     $posts = getPosts($start);
-    $nbPage = ceil(getNbPosts()/5);
+    $nbPage = ceil(getNbPosts(0)/5);
     $actualPage = $start;
 
     $template = $twig->load('blogView.php');
@@ -203,4 +206,31 @@ function deletePost($id)
     {
         echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage, 'js' => 'toasterNoPost']);
     }
+}
+
+function addPost()
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('addPostView.php');
+    echo $template->render();
+
+}
+
+function addOnePost($title, $chapo, $content, $image)
+{
+    insertOnePost($title, $chapo, $content, $image);
+
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('adminPageView.php');
+    echo $template->render(['js' => 'toasterPostAdded']);
 }
