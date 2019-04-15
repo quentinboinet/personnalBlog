@@ -6,7 +6,7 @@
  * Time: 18:04
  */
 
-require('model/frontend.php');
+require_once 'model/Frontend.php';
 require_once 'vendor/autoload.php';
 
 
@@ -63,8 +63,10 @@ function homeBlog($start)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
-    $posts = getPosts($start);
-    $nbPage = ceil(getNbPosts(0)/5);
+    $front = new Frontend();
+    $posts = $front->getPosts($start);
+    $nbPage = ceil($front->getNbPosts(0)/5);
+
     $actualPage = $start;
 
     $template = $twig->load('blogView.php');
@@ -79,9 +81,10 @@ function viewPost($id)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
-    $post = getOnePost($id);
-    $comments = getComments($id);
-    $nbComments = getNbComments($id);
+    $front = new Frontend();
+    $post = $front->getOnePost($id);
+    $comments = $front->getComments($id);
+    $nbComments = $front->getNbComments($id);
 
     $template = $twig->load('postView.php');
     echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
@@ -95,22 +98,19 @@ function addComment($id, $comment)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
-    $retour = saveComment($id, $comment);
+    $front = new Frontend();
+    $retour = $front->saveComment($id, $comment);
+    $post = $front->getOnePost($id);
+    $comments = $front->getComments($id);
+    $nbComments = $front->getNbComments($id);
+
     if ($retour == "commentAdded")
     {
-        $post = getOnePost($id);
-        $comments = getComments($id);
-        $nbComments = getNbComments($id);
-
         $template = $twig->load('postView.php');
         echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentAdded']);
     }
     elseif ($retour == "commentAddedValidation")
     {
-        $post = getOnePost($id);
-        $comments = getComments($id);
-        $nbComments = getNbComments($id);
-
         $template = $twig->load('postView.php');
         echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments,  'js' => 'toasterCommentValidation']);
     }
@@ -142,7 +142,9 @@ function signUp($action)
 
 function registerUser($lastName, $firstName, $email, $password)
 {
-    $retour = saveUser($lastName, $firstName, $email, $password);
+    $front = new Frontend();
+    $retour = $front->saveUser($lastName, $firstName, $email, $password);
+
     return $retour;
 }
 
@@ -171,7 +173,9 @@ function logIn($action)
 
 function userLogIn ($mail, $pass)
 {
-    $retour = checkUserLogIn($mail, $pass);
+    $front = new Frontend();
+    $retour = $front->checkUserLogIn($mail, $pass);
+
     return $retour;
 }
 

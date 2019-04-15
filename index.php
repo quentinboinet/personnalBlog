@@ -8,8 +8,8 @@
 
 session_start();
 
-require('controller/frontend.php');
-require('controller/backend.php');
+require_once 'controller/Frontend.php';
+require_once 'controller/Backend.php';
 
 if (isset ($_GET['action']))
 {
@@ -132,6 +132,14 @@ if (isset ($_GET['action']))
         }
         else {
             echo 'Erreur : aucun identifiant de post renseigné !';
+        }
+    }
+    elseif ($_GET['action'] == "addPost") {
+        if (isset($_POST['title']) OR isset($_POST['image']) OR isset($_POST['content']) OR isset($_POST['chapo'])) {
+            addOnePost($_POST['title'], $_POST['chapo'], $_POST['content'], $_POST['image']);
+        }
+        else {
+            addPost();
         }
     }
 
