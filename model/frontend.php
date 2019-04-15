@@ -23,12 +23,23 @@ Class Frontend extends Base
         return $requete;
     }
 
-    public function getOnePost($id)
+    public function getOnePost($id, $userStatus)
     {
         $db = $this->dbConnect();
-        $requete = $db->prepare('SELECT post.*, user.lastName, user.firstName FROM post JOIN user ON post.authorId = user.id WHERE post.id = :identifiant');
-        $requete->bindParam(':identifiant', $id, PDO::PARAM_INT);
-        $requete->execute();
+
+        if ($userStatus == "NULL")//si l'id de l'auteur vaut NULL (user supprimé), alors on fait juste la requête sur la table post, sans jointure
+        {
+            $requete = $db->prepare('SELECT * FROM post WHERE id = :identifiant');
+            $requete->bindParam(':identifiant', $id, PDO::PARAM_INT);
+            $requete->execute();
+        }
+        else
+        {
+            $requete = $db->prepare('SELECT post.*, user.lastName, user.firstName FROM post JOIN user ON post.authorId = user.id WHERE post.id = :identifiant');
+            $requete->bindParam(':identifiant', $id, PDO::PARAM_INT);
+            $requete->execute();
+        }
+
 
         return $requete;
     }
@@ -162,6 +173,25 @@ Class Frontend extends Base
             return "commentAddedValidation";
         }
 
+    }
+
+    public function getPostAuthorId($id)
+    {
+        $db = $this->dbConnect();
+
+        $authorId =  $db->prepare("SELECT authorId FROM post WHERE id = :identifiant");
+        $authorId->bindParam(':identifiant', $id, PDO::PARAM_STR);
+        $authorId->execute();
+        $authorId = $authorId->fetchColumn();
+
+        if (empty($authorId))
+        {
+            return "NULL";
+        }
+        else
+        {
+            return "OK";
+        }
     }
 
 }

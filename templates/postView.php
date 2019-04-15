@@ -41,7 +41,7 @@
                 <div class="card-content">
                     <span class="card-title">{{ data.title }}</span>
                     <p><b>{{ data.chapo | nl2br }}</b></p><br />
-                    <p><i>{{ data.firstName }} {{ data.lastName }} | {{ data.lastModifiedDate | date("d/m/Y", "Europe/Paris") }} à {{ data.lastModifiedDate | date("H:i") }} | {{ nbComments }} commentaires</i></p><br/>
+                    <p><i>{% if data.firstName is defined %}{{ data.firstName }} {{ data.lastName }} {% else %} Utilisateur anonyme {% endif %} | {{ data.lastModifiedDate | date("d/m/Y", "Europe/Paris") }} à {{ data.lastModifiedDate | date("H:i") }} | {{ nbComments }} commentaires</i></p><br/>
                     <div class="divider"></div>
                     <br /><p>{{ data.content | nl2br }}</p>
                 </div>
@@ -76,7 +76,7 @@
             <form action="index.php?action=viewPost&i={{ data.id }}" method="post">
                 <div class="row">
                         <div class="input-field">
-                            <textarea name="comment" id="comment" class="materialize-textarea" rows="5"></textarea>
+                            <textarea name="comment" id="comment" class="materialize-textarea" rows="5" required></textarea>
                             <label for="comment">Commentaire :</label>
                         </div>
                 </div>

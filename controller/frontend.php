@@ -82,7 +82,10 @@ function viewPost($id)
     $twig->addGlobal('session', $_SESSION);
 
     $front = new Frontend();
-    $post = $front->getOnePost($id);
+
+    $authorID = $front->getPostAuthorId($id);
+
+    $post = $front->getOnePost($id, $authorID);
     $comments = $front->getComments($id);
     $nbComments = $front->getNbComments($id);
 
@@ -100,7 +103,9 @@ function addComment($id, $comment)
 
     $front = new Frontend();
     $retour = $front->saveComment($id, $comment);
-    $post = $front->getOnePost($id);
+
+    $authorId = $front->getPostAuthorId($id);
+    $post = $front->getOnePost($id, $authorId);
     $comments = $front->getComments($id);
     $nbComments = $front->getNbComments($id);
 
