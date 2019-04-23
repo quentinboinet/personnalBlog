@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <i class="material-icons prefix">add_a_photo</i>
-                    <input placeholder="URL de l'image" name="image" id='image' type="text" class="validate" required>
+                    <input placeholder="URL de l'image" name="image" id='image' type="text" class="validate">
                     <label for="image">Image de couverture :</label>
                 </div>
             </div>

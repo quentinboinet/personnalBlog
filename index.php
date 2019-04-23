@@ -22,7 +22,7 @@ if (isset ($_GET['action']))
             home($action);
             }
             else {
-                echo 'Erreur : tous les champs ne sont pas remplis !';
+                error();
             }
         }
     elseif ($_GET['action'] == 'blog') {
@@ -43,7 +43,7 @@ if (isset ($_GET['action']))
             }
         }
         else {
-            echo 'Erreur : aucun identifiant de billet renseigné !';
+            error();
         }
     }
     elseif ($_GET['action'] == 'signup') {
@@ -101,7 +101,7 @@ if (isset ($_GET['action']))
             approveComment($_GET['i']);
         }
         else {
-            echo 'Erreur : aucun identifiant de commentaire renseigné !';
+            error();
         }
     }
     elseif ($_GET['action'] == "deleteComment") {
@@ -109,7 +109,7 @@ if (isset ($_GET['action']))
             deleteComment($_GET['i']);
         }
         else {
-            echo 'Erreur : aucun identifiant de commentaire renseigné !';
+            error();
         }
     }
     elseif ($_GET['action'] == "editPost") {
@@ -123,7 +123,7 @@ if (isset ($_GET['action']))
             }
         }
         else {
-            echo 'Erreur : aucun identifiant de post renseigné !';
+            error();
         }
     }
     elseif ($_GET['action'] == "deletePost") {
@@ -131,12 +131,13 @@ if (isset ($_GET['action']))
             deletePost($_GET['i']);
         }
         else {
-            echo 'Erreur : aucun identifiant de post renseigné !';
+            error();
         }
     }
     elseif ($_GET['action'] == "addPost") {
         if (isset($_POST['title']) OR isset($_POST['image']) OR isset($_POST['content']) OR isset($_POST['chapo'])) {
-            addOnePost($_POST['title'], $_POST['chapo'], $_POST['content'], $_POST['image']);
+            if (empty($_POST['image'])) { $image = "public/images/defaultCover.jpg"; } else { $image = $_POST['image']; }//si l'user n'a rempli aucune image pour l'article, alors on mets le chemin vers l'image par défaut
+            addOnePost($_POST['title'], $_POST['chapo'], $_POST['content'], $image);
         }
         else {
             addPost();

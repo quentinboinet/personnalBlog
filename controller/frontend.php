@@ -195,3 +195,15 @@ function logOut()
     $template = $twig->load('homeView.php');
     echo $template->render();
 }
+
+function error()
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('errorPageView.php');
+    echo $template->render(['errorType' => 'unidentified']);
+}

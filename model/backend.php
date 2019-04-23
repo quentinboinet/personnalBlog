@@ -154,6 +154,7 @@ Class Backend extends Base
     {
         $db = $this->dbConnect();
 
+        date_default_timezone_set('Europe/Paris');
         $time = time();
 
         $requete = $db->prepare("UPDATE post SET title = :title, chapo = :chapo, content = :content, lastModifiedDate = :time WHERE id = :identifiant");
@@ -172,6 +173,7 @@ Class Backend extends Base
     {
         $db = $this->dbConnect();
 
+        date_default_timezone_set('Europe/Paris');
         $creationDate = time();
         $authorId = $_SESSION['userId'];
 

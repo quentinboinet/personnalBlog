@@ -155,6 +155,8 @@ Class Frontend extends Base
         }
 
         $auteur = $_SESSION['userId'];
+
+        date_default_timezone_set('Europe/Paris');
         $creationDate = time();
 
         $requete = $db->prepare("INSERT INTO comment (postId, authorId, content, creationDate, status) VALUES (:postId, :authorId, :content, :creationDate, :status)");

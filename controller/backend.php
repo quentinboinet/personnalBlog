@@ -188,8 +188,10 @@ require_once 'vendor/autoload.php';
 
                 $template = $twig->load('editPostView.php');
                 echo $template->render(['datas' => $postInfo]);
-            } else {
-
+            } else
+                {
+                $template = $twig->load('errorPageView.php');
+                echo $template->render(['errorType' => 'postDoesNotExist']);
             }
         }
         else
@@ -228,10 +230,12 @@ require_once 'vendor/autoload.php';
                     $template = $twig->load('postView.php');
                     echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterPostEdited']);
                 } else {
-
+                    $template = $twig->load('errorPageView.php');
+                    echo $template->render(['errorType' => 'unidentified']);
                 }
             } else {
-
+                $template = $twig->load('errorPageView.php');
+                echo $template->render(['errorType' => 'postDoesNotExist']);
             }
         }
         else
