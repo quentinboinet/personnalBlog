@@ -22,7 +22,7 @@ Class Backend extends Base
 
     public function deleteOneUser($userId)
     {
-        $db = $this->bConnect();
+        $db = $this->dbConnect();
 
         //on vérifie que cet utilisateur existe et que ce n'est pas nous
         if ($_SESSION['userId'] != $userId) {
