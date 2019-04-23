@@ -64,7 +64,7 @@ Class Frontend extends Base
     public function getComments($postId)
     {
         $db = $this->dbConnect();
-        $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName FROM comment JOIN user ON comment.authorId = user.id WHERE comment.postId = :identifiant AND comment.status="1" ORDER BY comment.creationDate DESC');
+        $requete = $db->prepare('SELECT comment.*, user.lastName, user.firstName FROM comment LEFT OUTER JOIN user ON comment.authorId = user.id WHERE comment.postId = :identifiant AND comment.status="1" ORDER BY comment.creationDate DESC');
         $requete->bindParam(':identifiant', $postId, PDO::PARAM_INT);
         $requete->execute();
 
