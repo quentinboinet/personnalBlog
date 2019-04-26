@@ -5,6 +5,7 @@
 {% block content %}
 
 {% if session.mail is defined and session.type == 1 %}
+
 <h5>Ajout d'un article</h5>
 
 <div class="row">

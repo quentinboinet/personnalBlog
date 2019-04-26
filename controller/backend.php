@@ -155,6 +155,7 @@ require_once 'vendor/autoload.php';
             $comments = $back->getCommmentsPendingApproval();
             $nbComments = $back->getNbCommentsPendingApproval();
 
+
             if ($retour == "OK") {
                 echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentDeleted']);
             } else {
@@ -213,6 +214,7 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
+
         if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
         {
             if ($nbPost == 1)//si l'id du post existe bien
@@ -267,6 +269,7 @@ require_once 'vendor/autoload.php';
             $actualPage = $start;
 
             $template = $twig->load('blogView.php');
+
 
             if ($retour == "OK") {
                 echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage, 'js' => 'toasterPostDeleted']);
@@ -323,3 +326,31 @@ require_once 'vendor/autoload.php';
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
+}
+
+function addPost()
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('addPostView.php');
+    echo $template->render();
+
+}
+
+function addOnePost($title, $chapo, $content, $image)
+{
+    insertOnePost($title, $chapo, $content, $image);
+
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('adminPageView.php');
+    echo $template->render(['js' => 'toasterPostAdded']);
+}

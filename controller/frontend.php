@@ -116,6 +116,10 @@ function addComment($id, $comment)
     }
     elseif ($retour == "commentAddedValidation")
     {
+        $post = getOnePost($id, $userStatus);
+        $comments = getComments($id);
+        $nbComments = getNbComments($id);
+
         $template = $twig->load('postView.php');
         echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments,  'js' => 'toasterCommentValidation']);
     }
