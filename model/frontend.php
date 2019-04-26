@@ -197,3 +197,22 @@ Class Frontend extends Base
     }
 
 }
+
+function getPostAuthorId($id)
+{
+    $db = dbConnect();
+
+    $authorId =  $db->prepare("SELECT authorId FROM post WHERE id = :identifiant");
+    $authorId->bindParam(':identifiant', $id, PDO::PARAM_STR);
+    $authorId->execute();
+    $authorId = $authorId->fetchColumn();
+
+    if (empty($authorId))
+    {
+        return "NULL";
+    }
+    else
+    {
+        return "OK";
+    }
+}

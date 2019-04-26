@@ -190,3 +190,23 @@ Class Backend extends Base
     }
 
 }
+
+function insertOnePost($titre, $chapo, $content, $image)
+{
+    $db = dbConnect();
+
+    $creationDate = time();
+    $authorId = $_SESSION['userId'];
+
+    $requete = $db->prepare("INSERT INTO post (authorId, title, chapo, content, picture, creationDate) VALUES (:author, :title, :chapo, :content, :picture, :creationDate)");
+    $requete->bindParam(':author', $authorId, PDO::PARAM_INT);
+    $requete->bindParam(':title', $titre, PDO::PARAM_STR);
+    $requete->bindParam(':chapo', $chapo, PDO::PARAM_STR);
+    $requete->bindParam(':content', $content, PDO::PARAM_STR);
+    $requete->bindParam(':picture', $image, PDO::PARAM_STR);
+    $requete->bindParam(':creationDate', $creationDate, PDO::PARAM_INT);
+
+    $requete->execute();
+
+    return "OK";
+}
