@@ -7,6 +7,7 @@
  */
 
 session_start();
+ini_set('display_errors',1);
 
 require_once 'controller/Frontend.php';
 require_once 'controller/Backend.php';

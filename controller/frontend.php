@@ -193,7 +193,7 @@ function logOut()
         'auto_reload' => 'true',
     ]);
     $template = $twig->load('homeView.php');
-    echo $template->render();
+    echo $template->render(['js' => 'toasterLogout']);
 }
 
 function error()

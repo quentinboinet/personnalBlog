@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 10 avr. 2019 à 09:08
+-- Généré le :  jeu. 25 avr. 2019 à 07:30
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.2.14
 
@@ -32,25 +32,32 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `postId` int(11) NOT NULL,
-  `authorId` int(11) NOT NULL,
+  `authorId` int(11) DEFAULT NULL,
   `content` text NOT NULL,
   `creationDate` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_comment_fk` (`authorId`),
-  KEY `post_comment_fk` (`postId`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  KEY `post_comment_fk` (`postId`),
+  KEY `authorId` (`authorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `comment`
 --
 
 INSERT INTO `comment` (`id`, `postId`, `authorId`, `content`, `creationDate`, `status`) VALUES
-(1, 6, 1, 'Très bel article, bravo !\r\n:)', 1554384940, 1),
-(2, 6, 1, 'Je m\'attendais à mieux de votre part.\r\nVraiment déçu c\'est dommage.', 1554384999, 1),
-(3, 6, 6, 'Hello\r\nTest d\'ajout d\'un commentaire', 1554739565, 0),
-(4, 5, 6, 'Commentaire les lacs de Savoie.\r\nOK', 1554814006, 0),
-(5, 6, 6, 'Bonjour, commentaire en validation.', 1554814527, 1);
+(12, 7, NULL, 'Test\r\nOK', 1554973922, 1),
+(14, 7, 6, 'Test\r\nRetour', 1555320546, 1),
+(15, 7, 6, 'Essai', 1555320568, 1),
+(16, 10, 6, 'Test\r\nCommentaire', 1555321716, 1),
+(17, 10, 6, 'Hello\r\nOK', 1555335535, 1),
+(20, 7, NULL, 'Essai d\'ajout\r\nValidation OK ?', 1555340952, 1),
+(21, 14, 6, 'Voila\r\nOK', 1556022661, 1),
+(22, 14, 6, 'Un autre commentaire\r\nValidé !', 1556022676, 1),
+(23, 14, NULL, 'Commentaire de l\'utilisateur\r\nTest', 1556023026, 1),
+(25, 15, 6, 'Essai heure commentaire', 1556027610, 1),
+(26, 15, 6, 'Test\r\nOK', 1556028801, 1),
+(27, 10, NULL, 'Essai d\'ajout\r\nOK', 1556030758, 1);
 
 -- --------------------------------------------------------
 
@@ -61,28 +68,25 @@ INSERT INTO `comment` (`id`, `postId`, `authorId`, `content`, `creationDate`, `s
 DROP TABLE IF EXISTS `post`;
 CREATE TABLE IF NOT EXISTS `post` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `authorId` int(11) NOT NULL,
+  `authorId` int(11) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `chapo` text NOT NULL,
   `content` tinytext NOT NULL,
   `picture` varchar(255) DEFAULT NULL,
   `creationDate` int(11) NOT NULL,
-  `lastModifiedDate` int(11) NOT NULL,
+  `lastModifiedDate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_post_fk` (`authorId`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+  KEY `authorId` (`authorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `post`
 --
 
 INSERT INTO `post` (`id`, `authorId`, `title`, `chapo`, `content`, `picture`, `creationDate`, `lastModifiedDate`) VALUES
-(1, 1, 'Test d\'article', 'Bonjour, résumé de cet article, blah blah', 'Contenu\r\nOK', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Belv%C3%A9d%C3%A8re_Lac_du_Bourget%2C_Grande_Molli%C3%A8re_%28%C3%A9t%C3%A9_2016%29.JPG/1200px-Belv%C3%A9d%C3%A8re_Lac_du_Bourget%2C_Grande_Molli%C3%A8re_%28%C3%A9t%C3%A9_2016%29.JPG', 1554220588, 1554220588),
-(2, 1, 'article n°2', 'Résumé de l\'article 2', 'Ca marche !', 'https://db-service.toubiz.de/var/plain_site/storage/images/orte/zermatt/matterhorn/davidson-07-001/1370955-1-ger-DE/Davidson-07-001_front_large.jpg', 1554220784, 1554220784),
-(3, 1, 'Test d\'article 3', 'Bonjour, résumé de cet article, blah blah', 'Contenu\r\nOK', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Belv%C3%A9d%C3%A8re_Lac_du_Bourget%2C_Grande_Molli%C3%A8re_%28%C3%A9t%C3%A9_2016%29.JPG/1200px-Belv%C3%A9d%C3%A8re_Lac_du_Bourget%2C_Grande_Molli%C3%A8re_%28%C3%A9t%C3%A9_2016%29.JPG', 1554298265, 1554298265),
-(4, 1, 'Mon super article !', 'Chapo de l\'article 4', 'Essai', 'https://www.savoie-mont-blanc.com/var/smb/storage/images/media/images/visites-et-decouvertes/nature/panorama-sur-le-lac-d-aiguebelette-1/13205-9-fre-FR/Panorama-sur-le-lac-d-Aiguebelette-1_default_format.jpg', 1554298285, 1554298285),
-(5, 1, 'Les lacs de Savoie', 'Article sur les lacs de Savoie', 'Le lac d\'Annecy, etc..', 'https://www.onetwotrips.com/wp-content/uploads/2017/07/annecy-Zimmerman76-848x400.jpg', 1554298399, 1554298399),
-(6, 1, 'article n°2', 'Résumé de l\'article 2', 'Ca marche !', 'https://db-service.toubiz.de/var/plain_site/storage/images/orte/zermatt/matterhorn/davidson-07-001/1370955-1-ger-DE/Davidson-07-001_front_large.jpg', 1554298449, 1554298489);
+(7, NULL, 'Les lacs de Savoie 45', 'Chapo modifié', 'Le lac d\'Annecy, etc..\r\nOK', 'https://www.onetwotrips.com/wp-content/uploads/2017/07/annecy-Zimmerman76-848x400.jpg', 1554298399, 1555320675),
+(10, 6, 'Les trails de Chambéry 1', 'Chapo trails', 'Test\r\nEssai\r\nAjout d\'un article\r\nOK\r\nVoila', 'http://4.bp.blogspot.com/-_BSF0Dkd0M4/TndPKPW0MqI/AAAAAAAACBg/vgViKSYYQA4/s1600/IMG_0922-1.jpg', 1555321668, 1555335632),
+(15, 6, 'Test', 'Voila', 'Bravo', 'public/images/defaultCover.jpg', 1556026742, NULL);
 
 -- --------------------------------------------------------
 
@@ -99,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `firstName` varchar(255) NOT NULL,
   `type` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `user`
@@ -107,6 +111,22 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`id`, `email`, `password`, `lastName`, `firstName`, `type`) VALUES
 (6, 'quentin@activup.net', '$2y$10$FOCIwt/UeTl5CNfCCvT33O25BoxW5RKyOiECbrqlO/9urXMOwcfJ.', 'Boinet', 'Quentin', 1);
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `comment`
+--
+ALTER TABLE `comment`
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`authorId`) REFERENCES `user` (`id`) ON DELETE SET NULL;
+
+--
+-- Contraintes pour la table `post`
+--
+ALTER TABLE `post`
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`authorId`) REFERENCES `user` (`id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

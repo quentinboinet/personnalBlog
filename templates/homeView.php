@@ -7,6 +7,8 @@
 {% if js == 'toaster' %}<script>M.toast({html: 'Votre message a bien été envoyé ! J\'y répondrais dans les plus brefs délais.', displayLength: 8000, classes:'rounded'});</script>{% endif %}
 
 {% if js == 'toasterLoginOK' %}<script>M.toast({html: 'Connexion réussie !', displayLength: 8000, classes:'rounded'});</script>{% endif %}
+{% if js == 'toasterLogout' %}<script>M.toast({html: 'Déconnexion réussie !', displayLength: 8000, classes:'rounded'});</script>{% endif %}
+
 
 {% endblock %}
 

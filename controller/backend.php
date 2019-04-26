@@ -6,6 +6,8 @@
  * Time: 18:04
  */
 
+use Twig\Environment;
+
 require_once 'model/Backend.php';
 require_once 'model/Frontend.php';
 require_once 'vendor/autoload.php';
@@ -13,7 +15,7 @@ require_once 'vendor/autoload.php';
     function adminPage()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -33,7 +35,7 @@ require_once 'vendor/autoload.php';
     function userManagement()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -57,7 +59,7 @@ require_once 'vendor/autoload.php';
     function deleteUser($userId)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -85,7 +87,7 @@ require_once 'vendor/autoload.php';
     function commentManagement()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -109,7 +111,7 @@ require_once 'vendor/autoload.php';
     function approveComment($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -140,7 +142,7 @@ require_once 'vendor/autoload.php';
     function deleteComment($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -171,7 +173,7 @@ require_once 'vendor/autoload.php';
     function editPost($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -208,7 +210,7 @@ require_once 'vendor/autoload.php';
         $nbPost = $front->getNbPosts($postId);
 
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -249,7 +251,7 @@ require_once 'vendor/autoload.php';
     function deletePost($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -284,7 +286,7 @@ require_once 'vendor/autoload.php';
     function addPost()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
@@ -307,7 +309,7 @@ require_once 'vendor/autoload.php';
         $back->insertOnePost($title, $chapo, $content, $image);
 
         $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader, [
+        $twig = new Environment($loader, [
             'auto_reload' => 'true',
         ]);
         $twig->addGlobal('session', $_SESSION);
