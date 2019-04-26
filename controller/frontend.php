@@ -45,6 +45,7 @@ function sendContactMail($firstname, $lastname, $email, $subject, $content)
     $body .= "<p>" . nl2br($content) . "</p>";
 
     // Create a message
+    $subject = "Blog personnel - " . $subject;
     $message = (new Swift_Message($subject))
         ->setFrom(['contact@quentinboinet.fr' => 'Contact - Blog Quentin Boinet'])
         ->setTo(['quentinboinet@live.fr' => 'Quentin Boinet'])
@@ -83,14 +84,25 @@ function viewPost($id)
 
     $front = new Frontend();
 
-    $authorID = $front->getPostAuthorId($id);
+    $nbPost = $front->getNbPosts($id);
+    if ($nbPost == 1)
+    {
+        $authorID = $front->getPostAuthorId($id);
 
-    $post = $front->getOnePost($id, $authorID);
-    $comments = $front->getComments($id);
-    $nbComments = $front->getNbComments($id);
+        $post = $front->getOnePost($id, $authorID);
+        $comments = $front->getComments($id);
+        $nbComments = $front->getNbComments($id);
 
-    $template = $twig->load('postView.php');
-    echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
+        $template = $twig->load('postView.php');
+        echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
+    }
+    else
+    {
+        $template = $twig->load('errorPageView.php');
+        echo $template->render(['errorType' => 'postDoesNotExist']);
+    }
+
+
 }
 
 function addComment($id, $comment)
