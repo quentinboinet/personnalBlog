@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf-8"/>
 
@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="col m2 hide-on-med-and-down">
-                            <a href="index.php" class="brand-logo center"><img src="public/images/logo4.png" title="Quentin Boinet" alt="Quentin Boinet" width="200" height="auto" /></a>
+                            <a href="index.php" class="brand-logo center"><img src="public/images/logo4.png" title="Quentin Boinet" alt="Quentin Boinet" width="200"/></a>
                         </div>
 
                         <div class="col m5">
