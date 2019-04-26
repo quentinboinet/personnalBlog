@@ -6,7 +6,7 @@
  * Time: 18:04
  */
 
-require('model/frontend.php');
+require_once 'model/Frontend.php';
 require_once 'vendor/autoload.php';
 
 
@@ -63,8 +63,10 @@ function homeBlog($start)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
-    $posts = getPosts($start);
-    $nbPage = ceil(getNbPosts(0)/5);
+    $front = new Frontend();
+    $posts = $front->getPosts($start);
+    $nbPage = ceil($front->getNbPosts(0)/5);
+
     $actualPage = $start;
 
     $template = $twig->load('blogView.php');
@@ -79,11 +81,13 @@ function viewPost($id)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
-    $authorID = getPostAuthorId($id);
+    $front = new Frontend();
 
-    $post = getOnePost($id, $authorID);
-    $comments = getComments($id);
-    $nbComments = getNbComments($id);
+    $authorID = $front->getPostAuthorId($id);
+
+    $post = $front->getOnePost($id, $authorID);
+    $comments = $front->getComments($id);
+    $nbComments = $front->getNbComments($id);
 
     $template = $twig->load('postView.php');
     echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
@@ -97,15 +101,16 @@ function addComment($id, $comment)
     ]);
     $twig->addGlobal('session', $_SESSION);
 
-    $userStatus = getPostAuthorId($id);
+    $front = new Frontend();
+    $retour = $front->saveComment($id, $comment);
 
-    $retour = saveComment($id, $comment);
+    $authorId = $front->getPostAuthorId($id);
+    $post = $front->getOnePost($id, $authorId);
+    $comments = $front->getComments($id);
+    $nbComments = $front->getNbComments($id);
+
     if ($retour == "commentAdded")
     {
-        $post = getOnePost($id, $userStatus);
-        $comments = getComments($id);
-        $nbComments = getNbComments($id);
-
         $template = $twig->load('postView.php');
         echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentAdded']);
     }
@@ -146,7 +151,9 @@ function signUp($action)
 
 function registerUser($lastName, $firstName, $email, $password)
 {
-    $retour = saveUser($lastName, $firstName, $email, $password);
+    $front = new Frontend();
+    $retour = $front->saveUser($lastName, $firstName, $email, $password);
+
     return $retour;
 }
 
@@ -175,7 +182,9 @@ function logIn($action)
 
 function userLogIn ($mail, $pass)
 {
-    $retour = checkUserLogIn($mail, $pass);
+    $front = new Frontend();
+    $retour = $front->checkUserLogIn($mail, $pass);
+
     return $retour;
 }
 
@@ -189,4 +198,16 @@ function logOut()
     ]);
     $template = $twig->load('homeView.php');
     echo $template->render();
+}
+
+function error()
+{
+    $loader = new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new \Twig\Environment($loader, [
+        'auto_reload' => 'true',
+    ]);
+    $twig->addGlobal('session', $_SESSION);
+
+    $template = $twig->load('errorPageView.php');
+    echo $template->render(['errorType' => 'unidentified']);
 }

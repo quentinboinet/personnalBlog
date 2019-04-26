@@ -59,7 +59,7 @@
     <div class="row">
         <div class="col s12">
             <div class="section">
-                <p><b>{{ comment.firstName }} {{ comment.lastName }} | {{ comment.creationDate | date("d/m/Y", "Europe/Paris") }} à {{ comment.creationDate | date("H:i") }}</b><br/>
+                <p><b>{% if comment.firstName is null %} Utilisateur anonyme {% else %} {{ comment.firstName }} {{ comment.lastName }} {%endif %}| {{ comment.creationDate | date("d/m/Y", "Europe/Paris") }} à {{ comment.creationDate | date("H:i") }}</b><br/>
                 <i>{{ comment.content | nl2br}}</i></p>
                 <div class="divider"></div>
             </div>
@@ -76,7 +76,7 @@
             <form action="index.php?action=viewPost&i={{ data.id }}" method="post">
                 <div class="row">
                         <div class="input-field">
-                            <textarea name="comment" id="comment" class="materialize-textarea" rows="5"></textarea>
+                            <textarea name="comment" id="comment" class="materialize-textarea" rows="5" required></textarea>
                             <label for="comment">Commentaire :</label>
                         </div>
                 </div>
