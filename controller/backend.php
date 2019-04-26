@@ -315,42 +315,11 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $template = $twig->load('adminPageView.php');
             echo $template->render(['js' => 'toasterPostAdded']);
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
-}
-
-function addPost()
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $template = $twig->load('addPostView.php');
-    echo $template->render();
-
-}
-
-function addOnePost($title, $chapo, $content, $image)
-{
-    insertOnePost($title, $chapo, $content, $image);
-
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $template = $twig->load('adminPageView.php');
-    echo $template->render(['js' => 'toasterPostAdded']);
-}
