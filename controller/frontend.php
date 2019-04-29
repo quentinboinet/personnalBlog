@@ -32,7 +32,9 @@ Class FrontendController
     public function sendContactMail($firstname, $lastname, $email, $subject, $content)
     {
         // Create the Transport
-        $transport = (new Swift_SmtpTransport('smtp.quentinboinet.fr', 587))
+        $transport = (new Swift_SmtpTransport('ssl0.ovh.net', 465))
+            ->setEncryption('ssl')
+            ->setAuthMode('login')
             ->setUsername('contact@quentinboinet.fr')
             ->setPassword('PNCfGcV2YiDc');
 
