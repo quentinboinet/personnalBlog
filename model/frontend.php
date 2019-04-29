@@ -14,6 +14,7 @@ Class Frontend extends Base
     public function getPosts($start)
     {
         $db = $this->dbConnect();
+
         $requete = $db->prepare('SELECT * FROM post ORDER BY creationDate DESC LIMIT :debut,5');
 
         $start = ($start - 1) * 5;

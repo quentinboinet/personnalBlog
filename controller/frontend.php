@@ -63,13 +63,25 @@ Class FrontendController
         $twig->addGlobal('session', $_SESSION);
 
         $front = new Frontend();
-        $posts = $front->getPosts($start);
-        $nbPage = ceil($front->getNbPosts(0) / 5);
 
-        $actualPage = $start;
+        //on vérifie qu'il y a au moins 1 article en BDD, sinon on affiche page "Aucun article"
+        $nombrePosts = $front->getNbPosts(0);
+        if ($nombrePosts >= 1)
+        {
+            $posts = $front->getPosts($start);
+            $nbPage = ceil($front->getNbPosts(0) / 5);
 
-        $template = $twig->load('blogView.php');
-        echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage]);
+            $actualPage = $start;
+
+            $template = $twig->load('blogView.php');
+            echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage]);
+        }
+        else
+        {
+            $template = $twig->load('blogView.php');
+            $posts = "NoPosts";
+            echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage]);
+        }
     }
 
     public function viewPost($id)
