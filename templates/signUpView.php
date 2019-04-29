@@ -43,6 +43,7 @@
                                 <label for="password">Mot de passe :</label>
                             </div>
                     </div>
+
                 <div class="row">
                     <div class="col s2 offset-s5">
                     <div class="input-field">

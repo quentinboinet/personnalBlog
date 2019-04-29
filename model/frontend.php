@@ -14,7 +14,8 @@ Class Frontend extends Base
     public function getPosts($start)
     {
         $db = $this->dbConnect();
-        $requete = $db->prepare('SELECT * FROM post ORDER BY creationDate DESC LIMIT :debut,5');
+
+        $requete = $db->prepare('SELECT * FROM post ORDER BY lastModifiedDate DESC LIMIT :debut,5');
 
         $start = ($start - 1) * 5;
         $requete->bindParam(':debut', $start, PDO::PARAM_INT);
@@ -110,7 +111,7 @@ Class Frontend extends Base
 
     }
 
-    public function checkUserLogIn($email, $password)
+    public function checkUserLogIn($email, $password, $captcha)
     {
         $db = $this->dbConnect();
 
@@ -124,21 +125,46 @@ Class Frontend extends Base
         {
             return "UserDoesNotExist";
         } else {
-            $mdp = $db->prepare("SELECT * FROM user WHERE email = :mail");
-            $mdp->bindParam(':mail', $email, PDO::PARAM_STR);
-            $mdp->execute();
-            $mdp = $mdp->fetch();
 
-            if (password_verify($password, $mdp['password'])) {
-                $_SESSION['userId'] = $mdp['id'];
-                $_SESSION['mail'] = $email;
-                $_SESSION['lastName'] = $mdp['lastName'];
-                $_SESSION['firstName'] = $mdp['firstName'];
-                $_SESSION['type'] = $mdp['type'];
-                return "OK";
-            } else {
-                return "UserDoesNotExist";
+            //on vérifie le captcha Google
+
+            // Ma clé privée
+            $secret = "6LdVzqAUAAAAAHut8_YPbdWQ7JUJ4fFXXJsTHCin";
+            // Paramètre renvoyé par le recaptcha
+            $response = $captcha;
+            // On récupère l'IP de l'utilisateur
+            $remoteip = $_SERVER['REMOTE_ADDR'];
+
+            $api_url = "https://www.google.com/recaptcha/api/siteverify?secret="
+                . $secret
+                . "&response=" . $response
+                . "&remoteip=" . $remoteip ;
+
+            $decode = json_decode(file_get_contents($api_url), true);
+
+            if ($decode['success'] == true) {
+                // C'est un humain
+                $mdp = $db->prepare("SELECT * FROM user WHERE email = :mail");
+                $mdp->bindParam(':mail', $email, PDO::PARAM_STR);
+                $mdp->execute();
+                $mdp = $mdp->fetch();
+
+                if (password_verify($password, $mdp['password'])) {
+                    $_SESSION['userId'] = $mdp['id'];
+                    $_SESSION['mail'] = $email;
+                    $_SESSION['lastName'] = $mdp['lastName'];
+                    $_SESSION['firstName'] = $mdp['firstName'];
+                    $_SESSION['type'] = $mdp['type'];
+                    return "OK";
+                } else {
+                    return "UserDoesNotExist";
+                }
             }
+            else {
+                // C'est un robot ou le code de vérification est incorrecte
+                return "ErrorCaptcha";
+            }
+
         }
     }
 

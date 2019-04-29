@@ -10,7 +10,10 @@ require_once 'model/Backend.php';
 require_once 'model/Frontend.php';
 require_once 'vendor/autoload.php';
 
-    function adminPage()
+Class BackendController
+{
+
+    public function adminPage()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -18,19 +21,16 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $template = $twig->load('adminPageView.php');
             echo $template->render();
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function userManagement()
+    public function userManagement()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -42,19 +42,16 @@ require_once 'vendor/autoload.php';
         $users = $back->getUsersList();
         $nbUsers = $back->getNbUsers();
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $template = $twig->load('userManagementView.php');
             echo $template->render(['users' => $users, 'nbUser' => $nbUsers]);
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function deleteUser($userId)
+    public function deleteUser($userId)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -62,8 +59,7 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $back = new Backend();
             $retour = $back->deleteOneUser($userId);
 
@@ -74,15 +70,13 @@ require_once 'vendor/autoload.php';
             } else {
                 echo $template->render(['js' => 'toasterUserNotDeleted']);
             }
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function commentManagement()
+    public function commentManagement()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -94,19 +88,16 @@ require_once 'vendor/autoload.php';
         $comments = $back->getCommmentsPendingApproval();
         $nbComments = $back->getNbCommentsPendingApproval();
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $template = $twig->load('commentManagementView.php');
             echo $template->render(['comments' => $comments, 'nbComment' => $nbComments]);
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function approveComment($id)
+    public function approveComment($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -116,8 +107,7 @@ require_once 'vendor/autoload.php';
 
         $template = $twig->load('commentManagementView.php');
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $back = new Backend();
             $retour = $back->approveOneComment($id);
 
@@ -129,15 +119,13 @@ require_once 'vendor/autoload.php';
             } else {
                 echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentNotExist']);
             }
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function deleteComment($id)
+    public function deleteComment($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -147,8 +135,7 @@ require_once 'vendor/autoload.php';
 
         $template = $twig->load('commentManagementView.php');
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $back = new Backend();
             $retour = $back->deleteOneComment($id);
 
@@ -161,15 +148,13 @@ require_once 'vendor/autoload.php';
             } else {
                 echo $template->render(['comments' => $comments, 'nbComment' => $nbComments, 'js' => 'toasterCommentNotExist']);
             }
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function editPost($id)
+    public function editPost($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -177,8 +162,7 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $front = new Frontend();
             $nbPost = $front->getNbPosts($id);
             $authorId = $front->getPostAuthorId($id);
@@ -189,20 +173,17 @@ require_once 'vendor/autoload.php';
 
                 $template = $twig->load('editPostView.php');
                 echo $template->render(['datas' => $postInfo]);
-            } else
-                {
+            } else {
                 $template = $twig->load('errorPageView.php');
                 echo $template->render(['errorType' => 'postDoesNotExist']);
             }
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function editOnePost($title, $chapo, $content, $postId)
+    public function editOnePost($title, $chapo, $content, $postId)
     {
 
         $front = new Frontend();
@@ -215,8 +196,7 @@ require_once 'vendor/autoload.php';
         $twig->addGlobal('session', $_SESSION);
 
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             if ($nbPost == 1)//si l'id du post existe bien
             {
                 $back = new Backend();
@@ -239,16 +219,14 @@ require_once 'vendor/autoload.php';
                 $template = $twig->load('errorPageView.php');
                 echo $template->render(['errorType' => 'postDoesNotExist']);
             }
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
 
     }
 
-    function deletePost($id)
+    public function deletePost($id)
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -256,8 +234,7 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $back = new Backend();
             $front = new Frontend();
             $retour = $back->deleteOnePost($id);
@@ -276,15 +253,13 @@ require_once 'vendor/autoload.php';
             } else {
                 echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage, 'js' => 'toasterNoPost']);
             }
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function addPost()
+    public function addPost()
     {
         $loader = new \Twig\Loader\FilesystemLoader('templates');
         $twig = new \Twig\Environment($loader, [
@@ -292,19 +267,16 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $template = $twig->load('addPostView.php');
             echo $template->render();
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
 
-    function addOnePost($title, $chapo, $content, $image)
+    public function addOnePost($title, $chapo, $content, $image)
     {
         $back = new Backend();
         $back->insertOnePost($title, $chapo, $content, $image);
@@ -315,42 +287,12 @@ require_once 'vendor/autoload.php';
         ]);
         $twig->addGlobal('session', $_SESSION);
 
-        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1")
-        {
+        if (isset($_SESSION['type']) AND $_SESSION['type'] == "1") {
             $template = $twig->load('adminPageView.php');
             echo $template->render(['js' => 'toasterPostAdded']);
-        }
-        else
-        {
+        } else {
             $template = $twig->load('errorPageView.php');
             echo $template->render(['errorType' => 'notAdmin']);
         }
     }
-}
-
-function addPost()
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $template = $twig->load('addPostView.php');
-    echo $template->render();
-
-}
-
-function addOnePost($title, $chapo, $content, $image)
-{
-    insertOnePost($title, $chapo, $content, $image);
-
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $template = $twig->load('adminPageView.php');
-    echo $template->render(['js' => 'toasterPostAdded']);
 }
