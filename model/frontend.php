@@ -15,7 +15,7 @@ Class Frontend extends Base
     {
         $db = $this->dbConnect();
 
-        $requete = $db->prepare('SELECT * FROM post ORDER BY creationDate DESC LIMIT :debut,5');
+        $requete = $db->prepare('SELECT * FROM post ORDER BY lastModifiedDate DESC LIMIT :debut,5');
 
         $start = ($start - 1) * 5;
         $requete->bindParam(':debut', $start, PDO::PARAM_INT);

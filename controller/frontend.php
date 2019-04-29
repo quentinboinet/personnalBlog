@@ -132,9 +132,9 @@ Class FrontendController
             $template = $twig->load('postView.php');
             echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentAdded']);
         } elseif ($retour == "commentAddedValidation") {
-            $post = getOnePost($id, $userStatus);
-            $comments = getComments($id);
-            $nbComments = getNbComments($id);
+            $post = $front->getOnePost($id, $userStatus);
+            $comments = $front->getComments($id);
+            $nbComments = $front->getNbComments($id);
 
             $template = $twig->load('postView.php');
             echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentValidation']);
