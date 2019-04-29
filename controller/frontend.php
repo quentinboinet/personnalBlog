@@ -9,222 +9,208 @@
 require_once 'model/Frontend.php';
 require_once 'vendor/autoload.php';
 
-
-function home($action)
+Class FrontendController
 {
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $template = $twig->load('homeView.php');
-
-    //test pour vérifier si on est après l'envoi d'un e-mail via formulaire de contact ou non
-    if ($action == "NULL") {
-        echo $template->render(['js' => "NULL"]);
-    }
-    elseif ($action == "MailOK") {
-        echo $template->render(['js' => "toaster"]); //Si après le formulaire de contact, variable js à toaster pour afficher le toaster JS sur la page
-    }
-}
-
-function sendContactMail($firstname, $lastname, $email, $subject, $content)
-{
-    // Create the Transport
-    $transport = (new Swift_SmtpTransport('smtp.quentinboinet.fr', 587))
-        ->setUsername('contact@quentinboinet.fr')
-        ->setPassword('PNCfGcV2YiDc')
-    ;
-
-    // Create the Mailer using your created Transport
-    $mailer = new Swift_Mailer($transport);
-
-    $body = "Bonjour, vous avez reçu un message de contact sur votre blog. <br />";
-    $body .= "<br /> De la part de : " . $firstname . " " . $lastname . " (" . $email . ") : <br /><br />";
-    $body .= "<p>" . nl2br($content) . "</p>";
-
-    // Create a message
-    $subject = "Blog personnel - " . $subject;
-    $message = (new Swift_Message($subject))
-        ->setFrom(['contact@quentinboinet.fr' => 'Contact - Blog Quentin Boinet'])
-        ->setTo(['quentinboinet@live.fr' => 'Quentin Boinet'])
-        ->addPart($body, 'text/html');
-    ;
-
-    // Send the message
-    $result = $mailer->send($message);
-}
-
-function homeBlog($start)
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $front = new Frontend();
-    $posts = $front->getPosts($start);
-    $nbPage = ceil($front->getNbPosts(0)/5);
-
-    $actualPage = $start;
-
-    $template = $twig->load('blogView.php');
-    echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage]);
-}
-
-function viewPost($id)
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $front = new Frontend();
-
-    $nbPost = $front->getNbPosts($id);
-    if ($nbPost == 1)
+    public function home($action)
     {
-        $authorID = $front->getPostAuthorId($id);
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $twig->addGlobal('session', $_SESSION);
 
-        $post = $front->getOnePost($id, $authorID);
+        $template = $twig->load('homeView.php');
+
+        //test pour vérifier si on est après l'envoi d'un e-mail via formulaire de contact ou non
+        if ($action == "NULL") {
+            echo $template->render(['js' => "NULL"]);
+        } elseif ($action == "MailOK") {
+            echo $template->render(['js' => "toaster"]); //Si après le formulaire de contact, variable js à toaster pour afficher le toaster JS sur la page
+        }
+    }
+
+    public function sendContactMail($firstname, $lastname, $email, $subject, $content)
+    {
+        // Create the Transport
+        $transport = (new Swift_SmtpTransport('smtp.quentinboinet.fr', 587))
+            ->setUsername('contact@quentinboinet.fr')
+            ->setPassword('PNCfGcV2YiDc');
+
+        // Create the Mailer using your created Transport
+        $mailer = new Swift_Mailer($transport);
+
+        $body = "Bonjour, vous avez reçu un message de contact sur votre blog. <br />";
+        $body .= "<br /> De la part de : " . $firstname . " " . $lastname . " (" . $email . ") : <br /><br />";
+        $body .= "<p>" . nl2br($content) . "</p>";
+
+        // Create a message
+        $subject = "Blog personnel - " . $subject;
+        $message = (new Swift_Message($subject))
+            ->setFrom(['contact@quentinboinet.fr' => 'Contact - Blog Quentin Boinet'])
+            ->setTo(['quentinboinet@live.fr' => 'Quentin Boinet'])
+            ->addPart($body, 'text/html');;
+
+        // Send the message
+        $result = $mailer->send($message);
+    }
+
+    public function homeBlog($start)
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $twig->addGlobal('session', $_SESSION);
+
+        $front = new Frontend();
+        $posts = $front->getPosts($start);
+        $nbPage = ceil($front->getNbPosts(0) / 5);
+
+        $actualPage = $start;
+
+        $template = $twig->load('blogView.php');
+        echo $template->render(['datas' => $posts, 'nbPage' => $nbPage, 'actualPage' => $actualPage]);
+    }
+
+    public function viewPost($id)
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $twig->addGlobal('session', $_SESSION);
+
+        $front = new Frontend();
+
+        $nbPost = $front->getNbPosts($id);
+        if ($nbPost == 1) {
+            $authorID = $front->getPostAuthorId($id);
+
+            $post = $front->getOnePost($id, $authorID);
+            $comments = $front->getComments($id);
+            $nbComments = $front->getNbComments($id);
+
+            $template = $twig->load('postView.php');
+            echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
+        } else {
+            $template = $twig->load('errorPageView.php');
+            echo $template->render(['errorType' => 'postDoesNotExist']);
+        }
+
+
+    }
+
+    public function addComment($id, $comment)
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $twig->addGlobal('session', $_SESSION);
+
+        $front = new Frontend();
+        $retour = $front->saveComment($id, $comment);
+
+        $authorId = $front->getPostAuthorId($id);
+        $post = $front->getOnePost($id, $authorId);
         $comments = $front->getComments($id);
         $nbComments = $front->getNbComments($id);
 
-        $template = $twig->load('postView.php');
-        echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments]);
+        if ($retour == "commentAdded") {
+            $template = $twig->load('postView.php');
+            echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentAdded']);
+        } elseif ($retour == "commentAddedValidation") {
+            $post = getOnePost($id, $userStatus);
+            $comments = getComments($id);
+            $nbComments = getNbComments($id);
+
+            $template = $twig->load('postView.php');
+            echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentValidation']);
+        }
     }
-    else
+
+    public function signUp($action)
     {
-        $template = $twig->load('errorPageView.php');
-        echo $template->render(['errorType' => 'postDoesNotExist']);
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $twig->addGlobal('session', $_SESSION);
+
+        if ($action == "validate") {
+
+            $template = $twig->load('signUpView.php');
+            echo $template->render(['js' => 'toaster']);
+        } elseif ($action == "userExist") {
+            $template = $twig->load('signUpView.php');
+            echo $template->render(['js' => 'toasterUserExist']);
+        } elseif ($action == "view") {
+            $template = $twig->load('signUpView.php');
+            echo $template->render();
+        }
     }
 
-
-}
-
-function addComment($id, $comment)
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $front = new Frontend();
-    $retour = $front->saveComment($id, $comment);
-
-    $authorId = $front->getPostAuthorId($id);
-    $post = $front->getOnePost($id, $authorId);
-    $comments = $front->getComments($id);
-    $nbComments = $front->getNbComments($id);
-
-    if ($retour == "commentAdded")
+    public function registerUser($lastName, $firstName, $email, $password)
     {
-        $template = $twig->load('postView.php');
-        echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments, 'js' => 'toasterCommentAdded']);
+        $front = new Frontend();
+        $retour = $front->saveUser($lastName, $firstName, $email, $password);
+
+        return $retour;
     }
-    elseif ($retour == "commentAddedValidation")
+
+    public function logIn($action)
     {
-        $post = getOnePost($id, $userStatus);
-        $comments = getComments($id);
-        $nbComments = getNbComments($id);
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $twig->addGlobal('session', $_SESSION);
 
-        $template = $twig->load('postView.php');
-        echo $template->render(['datas' => $post, 'comments' => $comments, 'nbComments' => $nbComments,  'js' => 'toasterCommentValidation']);
+        if ($action == "validate") {
+            $template = $twig->load('homeView.php');
+            echo $template->render(['js' => 'toasterLoginOK']);
+        } elseif ($action == "userDoesNotExist") {
+            $template = $twig->load('logInView.php');
+            echo $template->render(['js' => 'toasterUserDoesNotExist']);
+        } elseif ($action == "captchaError") {
+            $template = $twig->load('errorPageView.php');
+            echo $template->render(['errorType' => 'unidentified']);
+        } elseif ($action == "view") {
+            $template = $twig->load('logInView.php');
+            echo $template->render();
+        }
+
     }
-}
 
-function signUp($action)
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    if ($action == "validate") {
-
-        $template = $twig->load('signUpView.php');
-        echo $template->render(['js' => 'toaster']);
-    }
-    elseif ($action == "userExist") {
-        $template = $twig->load('signUpView.php');
-        echo $template->render(['js' => 'toasterUserExist']);
-    }
-    elseif ($action == "view")
+    public function userLogIn($mail, $pass, $captcha)
     {
-        $template = $twig->load('signUpView.php');
+        $front = new Frontend();
+        $retour = $front->checkUserLogIn($mail, $pass, $captcha);
+
+        return $retour;
+    }
+
+    public function logOut()
+    {
+        session_destroy();
+
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $template = $twig->load('homeView.php');
         echo $template->render();
     }
-}
 
-function registerUser($lastName, $firstName, $email, $password)
-{
-    $front = new Frontend();
-    $retour = $front->saveUser($lastName, $firstName, $email, $password);
-
-    return $retour;
-}
-
-function logIn($action)
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    if ($action == "validate") {
-        $template = $twig->load('homeView.php');
-        echo $template->render(['js' => 'toasterLoginOK']);
-    }
-    elseif ($action == "userDoesNotExist") {
-        $template = $twig->load('logInView.php');
-        echo $template->render(['js' => 'toasterUserDoesNotExist']);
-    }
-    elseif ($action == "captchaError")
+    public function error()
     {
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader, [
+            'auto_reload' => 'true',
+        ]);
+        $twig->addGlobal('session', $_SESSION);
+
         $template = $twig->load('errorPageView.php');
         echo $template->render(['errorType' => 'unidentified']);
     }
-    elseif ($action == "view") {
-        $template = $twig->load('logInView.php');
-        echo $template->render();
-    }
-
-}
-
-function userLogIn ($mail, $pass, $captcha)
-{
-    $front = new Frontend();
-    $retour = $front->checkUserLogIn($mail, $pass, $captcha);
-
-    return $retour;
-}
-
-function logOut()
-{
-    session_destroy();
-
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $template = $twig->load('homeView.php');
-    echo $template->render();
-}
-
-function error()
-{
-    $loader = new \Twig\Loader\FilesystemLoader('templates');
-    $twig = new \Twig\Environment($loader, [
-        'auto_reload' => 'true',
-    ]);
-    $twig->addGlobal('session', $_SESSION);
-
-    $template = $twig->load('errorPageView.php');
-    echo $template->render(['errorType' => 'unidentified']);
 }
