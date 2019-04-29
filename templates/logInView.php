@@ -29,6 +29,11 @@
                                 <label for="password">Mot de passe :</label>
                             </div>
                     </div>
+                <div class="row center">
+                    <div class="col s4 offset-s3">
+                        <div class="g-recaptcha" data-sitekey="6LdVzqAUAAAAAE3DZvIbM9pjEthaOYaSC4pFTYoD"></div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col s2 offset-s5">
                     <div class="input-field">

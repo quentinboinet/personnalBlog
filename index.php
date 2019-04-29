@@ -63,9 +63,13 @@ if (isset ($_GET['action']))
     }
     elseif ($_GET['action'] == "login") {
         if (isset($_POST['email']) OR isset($_POST['password'])) {
-            $retour = userLogIn($_POST['email'], $_POST['password']);
+            $retour = userLogIn($_POST['email'], $_POST['password'], $_POST['g-recaptcha-response']);
             if ($retour == "OK") {
                 logIn('validate');
+            }
+            elseif ($retour == "ErrorCaptcha")
+            {
+                logIn('captchaError');
             }
             else
             {

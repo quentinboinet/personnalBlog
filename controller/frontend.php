@@ -185,6 +185,11 @@ function logIn($action)
         $template = $twig->load('logInView.php');
         echo $template->render(['js' => 'toasterUserDoesNotExist']);
     }
+    elseif ($action == "captchaError")
+    {
+        $template = $twig->load('errorPageView.php');
+        echo $template->render(['errorType' => 'unidentified']);
+    }
     elseif ($action == "view") {
         $template = $twig->load('logInView.php');
         echo $template->render();
@@ -192,10 +197,10 @@ function logIn($action)
 
 }
 
-function userLogIn ($mail, $pass)
+function userLogIn ($mail, $pass, $captcha)
 {
     $front = new Frontend();
-    $retour = $front->checkUserLogIn($mail, $pass);
+    $retour = $front->checkUserLogIn($mail, $pass, $captcha);
 
     return $retour;
 }
