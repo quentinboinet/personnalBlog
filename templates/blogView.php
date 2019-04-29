@@ -29,7 +29,7 @@
                     <div class="card-stacked col s8">
                         <div class="card-content">
                             <span class="card-title">{{ data.title }}</span>
-                            <p>{{ data.chapo }}</p>
+                            <p class="hide-on-med-and-down">{{ data.chapo }}</p>
                         </div>
                         <div class="card-action">
                             <i>Mis à jour le : {{ data.lastModifiedDate | date("d/m/Y", "Europe/Paris") }} à {{ data.lastModifiedDate | date("H:i") }}</i>
