@@ -36,7 +36,7 @@ Class FrontendController
             ->setEncryption('ssl')
             ->setAuthMode('login')
             ->setUsername('contact@quentinboinet.fr')
-            ->setPassword('PNCfGcV2YiDc');
+            ->setPassword('cvZpf7Y9Vcs9');
 
         // Create the Mailer using your created Transport
         $mailer = new Swift_Mailer($transport);

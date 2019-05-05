@@ -43,7 +43,7 @@
                     <p><b>{{ data.chapo | nl2br }}</b></p><br />
                     <p><i>{% if data.firstName is defined %}{{ data.firstName }} {{ data.lastName }} {% else %} Utilisateur anonyme {% endif %} | {{ data.lastModifiedDate | date("d/m/Y", "Europe/Paris") }} à {{ data.lastModifiedDate | date("H:i") }} | {{ nbComments }} commentaires</i></p><br/>
                     <div class="divider"></div>
-                    <br /><p>{{ data.content | nl2br }}</p>
+                    <br /><p>{{ data.content | raw }}</p>
                 </div>
             </div>
         </div>

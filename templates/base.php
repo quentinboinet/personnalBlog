@@ -25,6 +25,20 @@
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+        <!-- script js pour tinyMce -->
+        <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=j0blwm2ug4n9e5azjjnwqn1kgj6sptnpgdtokkhb0pmquwp0"></script>
+        <script>
+            tinymce.init({
+                selector: '#content',
+                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
+                height: 600,
+                formats: {
+                    bold : {inline : 'b' }
+                },
+            });
+        </script>
+
+
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.sidenav');

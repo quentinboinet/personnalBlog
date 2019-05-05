@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <textarea name="content" id="content" class="materialize-textarea" rows="10">{{ data.content }}</textarea>
+                            <textarea name="content" id="content" class="materialize-textarea" rows="20">{{ data.content }}</textarea>
                             <label for="content">Contenu :</label>
                         </div>
                     </div>
